@@ -44,3 +44,18 @@ export let items = [
         data: [1, 110, 120, 130, 140, 150, 160, 170, 180, 190]
     }
 ];
+
+let sortOrderByTime = [];
+
+function init() {
+    for (let time = 0; time < timeLabels.length; time++) {
+        let dataForTime = items
+            .map((item, _) => ({ value: item.data[time], name: item.name }))
+            .sort((a, b) => b.value - a.value)
+            .map((item, _) => item.name);
+
+        sortOrderByTime.push(dataForTime);
+    }
+}
+
+init();
