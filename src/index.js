@@ -1,58 +1,35 @@
-import { items } from './data.js';
+import { items, timeLabels } from './data.js';
 import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
-console.log('x');
-console.log(items);
+let width = 700;
+let height = 700;
+let cameraLeftMargin = 1;
 
 const scene = new Scene();
-const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+camera.position.z = 5;
+camera.position.x = cameraLeftMargin;
 
 const renderer = new WebGLRenderer();
-renderer.setSize( 700, 700 );
-document.body.appendChild( renderer.domElement );
+renderer.setSize(width, height);
+document.body.appendChild(renderer.domElement);
 
-const geometry = new BoxGeometry( 1, 1, 1 );
-const material = new MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new Mesh( geometry, material );
-scene.add( cube );
 
-camera.position.z = 5;
 
-var canvas = document.querySelector('canvas');
-var video = document.querySelector('video');
-var videoStream = canvas.captureStream();
-var mediaRecorder = new MediaRecorder(videoStream);
-mediaRecorder.start();
-
-function animate() {
-	requestAnimationFrame( animate );
-
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-
-	renderer.render( scene, camera );
-    videoStream.getVideoTracks()[0].requestFrame();
+function init() {
+  for (const item of items) {
+    var geometry = new BoxGeometry( 1, 1, 1 );
+    var material = new MeshBasicMaterial( { color: 0x00ff00 } );
+    item.bar = new Mesh(geometry, material);
+    scene.add(item.bar);
+  }
 }
 
+function animate() {
+	requestAnimationFrame(animate);
+
+	renderer.render(scene, camera);
+}
+
+init();
 animate();
-
-
-
-var chunks = [];
-mediaRecorder.ondataavailable = function(e) {
-  chunks.push(e.data);
-  console.log("Data available")
-};
-
-mediaRecorder.onstop = function(e) {
-  var blob = new Blob(chunks, { 'type' : 'video/mp4' });
-  chunks = [];
-    var videoURL = URL.createObjectURL(blob);
-    video.src = videoURL;
-  };
-  
-
-setTimeout(function () { 
-  mediaRecorder.stop(); 
-  console.log("Stop")
-}, 5000);
