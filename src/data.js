@@ -59,3 +59,7 @@ function init() {
 }
 
 init();
+
+export function getItemOrder(name, time) {
+    return sortOrderByTime[time].indexOf(name);
+}

@@ -1,5 +1,5 @@
-import { items, timeLabels } from './data.js';
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
+import { items, timeLabels, getItemOrder } from './data.js';
+import { Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
 let width = 700;
 let height = 700;
@@ -10,8 +10,8 @@ let barMaxWidth = 10;
 let barGap = 0.5;
 
 const scene = new Scene();
-const camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-camera.position.z = 5;
+const camera = new OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 1000);
+camera.position.z = 2;
 camera.position.x = cameraLeftMargin;
 camera.position.y = cameraTopMargin;
 
@@ -37,8 +37,18 @@ function init() {
 function animate() {
 	requestAnimationFrame(animate);
 
+  setBarsPosition();
+
 	renderer.render(scene, camera);
 }
 
 init();
 animate();
+
+function setBarsPosition(){
+  let time = 0;
+  for (const item of items) {
+    var sortOrder = getItemOrder(item.name, time);
+    item.bar.position.y = - sortOrder * (barThickness + barGap);
+  }
+}
