@@ -5,12 +5,13 @@ let width = 700;
 let height = 700;
 let cameraLeftMargin = 1;
 let cameraTopMargin = -1;
-let barThickness = 1;
-let barMaxWidth = 10;
-let barGap = 0.5;
+let barThickness = 10;
+let barMaxWidth = 100;
+let barGap = 10;
+let maxNrOfBarsToShow = 7;
 
 const scene = new Scene();
-const camera = new OrthographicCamera(width/-2, width/2, height/2, height/-2, 1, 1000);
+const camera = new OrthographicCamera(width/-2, width/2, height/2, height/-2, 0.1, 1000);
 camera.position.z = 2;
 camera.position.x = cameraLeftMargin;
 camera.position.y = cameraTopMargin;
@@ -30,13 +31,12 @@ function init() {
     item.bar = new Mesh(geometry, material);
     scene.add(item.bar);
   }
-
-  console.log(items)
 }
 
 function animate() {
 	requestAnimationFrame(animate);
 
+  setBarsWidth();
   setBarsPosition();
 
 	renderer.render(scene, camera);
@@ -45,10 +45,28 @@ function animate() {
 init();
 animate();
 
+function setBarsWidth() {
+  let time = 0;
+  var maxValue = items.map(item => item.data[time]).reduce((a, b) => Math.max(a, b));
+  for (const item in items) {
+    let barWidth = (items[item].data[time] / maxValue) * barMaxWidth;
+    items[item].bar.scale.x = barWidth;
+  }
+}
+
 function setBarsPosition(){
+  let barsAreaHeight = (barThickness + barGap) * maxNrOfBarsToShow;
+  let barsAreaTop = barsAreaHeight / 2;
+
   let time = 0;
   for (const item of items) {
     var sortOrder = getItemOrder(item.name, time);
-    item.bar.position.y = - sortOrder * (barThickness + barGap);
+    if (sortOrder >= maxNrOfBarsToShow) {
+      item.bar.visible = false;
+      continue;
+    }
+
+    item.bar.position.y = barsAreaTop - (barThickness / 2) - sortOrder * (barThickness + barGap);
+    item.bar.position.x = item.bar.scale.x / 2 - barMaxWidth / 2;
   }
 }
