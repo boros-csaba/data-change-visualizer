@@ -9,6 +9,7 @@ let barThickness = 10;
 let barMaxWidth = 100;
 let barGap = 10;
 let maxNrOfBarsToShow = 7;
+let framesBetweenTimeChange = 30;
 
 const scene = new Scene();
 const camera = new OrthographicCamera(width/-2, width/2, height/2, height/-2, 0.1, 1000);
@@ -33,6 +34,7 @@ function init() {
   }
 }
 
+let frame = 0;
 function animate() {
 	requestAnimationFrame(animate);
 
@@ -40,13 +42,15 @@ function animate() {
   setBarsPosition();
 
 	renderer.render(scene, camera);
+
+  frame++;
 }
 
 init();
 animate();
 
 function setBarsWidth() {
-  let time = 0;
+  let time = getTime();
   var maxValue = items.map(item => item.data[time]).reduce((a, b) => Math.max(a, b));
   for (const item in items) {
     let barWidth = (items[item].data[time] / maxValue) * barMaxWidth;
@@ -55,10 +59,10 @@ function setBarsWidth() {
 }
 
 function setBarsPosition(){
+  let time = getTime();
   let barsAreaHeight = (barThickness + barGap) * maxNrOfBarsToShow;
   let barsAreaTop = barsAreaHeight / 2;
 
-  let time = 0;
   for (const item of items) {
     var sortOrder = getItemOrder(item.name, time);
     if (sortOrder >= maxNrOfBarsToShow) {
@@ -68,5 +72,14 @@ function setBarsPosition(){
 
     item.bar.position.y = barsAreaTop - (barThickness / 2) - sortOrder * (barThickness + barGap);
     item.bar.position.x = item.bar.scale.x / 2 - barMaxWidth / 2;
+    item.bar.visible = true;
   }
+}
+
+function getTime() {
+  let time = Math.floor(frame / framesBetweenTimeChange);
+  if (time >= timeLabels.length) {
+    time = timeLabels.length - 1;
+  }
+  return time;
 }
