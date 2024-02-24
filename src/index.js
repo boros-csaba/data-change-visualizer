@@ -1,17 +1,18 @@
-import { items, timeLabels, getItemOrder } from './data.js';
-import { Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
+import { items, timeLabels, getItemOrder, getMaxValue } from './data.js';
+import { Color, Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
 let width = 700;
 let height = 700;
 let cameraLeftMargin = 1;
 let cameraTopMargin = -1;
-let barThickness = 10;
-let barMaxWidth = 100;
+let barThickness = 20;
+let barMaxWidth = 200;
 let barGap = 10;
 let maxNrOfBarsToShow = 7;
 let framesBetweenTimeChange = 30;
 
 const scene = new Scene();
+scene.background = new Color(0xffffff);
 const camera = new OrthographicCamera(width/-2, width/2, height/2, height/-2, 0.1, 1000);
 camera.position.z = 2;
 camera.position.x = cameraLeftMargin;
@@ -51,9 +52,18 @@ animate();
 
 function setBarsWidth() {
   let time = getTime();
-  var maxValue = items.map(item => item.data[time]).reduce((a, b) => Math.max(a, b));
+  var maxValue = getMaxValue(time);
+
   for (const item in items) {
     let barWidth = (items[item].data[time] / maxValue) * barMaxWidth;
+
+    if (time < items.length - 1) {
+      let nextMaxValue = getMaxValue(time + 1);
+      let nextBarWidth = (items[item].data[time + 1] / nextMaxValue) * barMaxWidth;
+      var timeFrame = frame % framesBetweenTimeChange;
+      barWidth = (timeFrame / framesBetweenTimeChange) * (nextBarWidth - barWidth) + barWidth;
+    }
+
     items[item].bar.scale.x = barWidth;
   }
 }
@@ -65,14 +75,17 @@ function setBarsPosition(){
 
   for (const item of items) {
     var sortOrder = getItemOrder(item.name, time);
-    if (sortOrder >= maxNrOfBarsToShow) {
-      item.bar.visible = false;
-      continue;
-    }
 
     item.bar.position.y = barsAreaTop - (barThickness / 2) - sortOrder * (barThickness + barGap);
     item.bar.position.x = item.bar.scale.x / 2 - barMaxWidth / 2;
-    item.bar.visible = true;
+
+    if (time < items.length - 1) {
+      var nextSortOrder = getItemOrder(item.name, time + 1);
+      var timeFrame = frame % framesBetweenTimeChange;
+
+      item.bar.position.y -= (timeFrame / framesBetweenTimeChange) * (nextSortOrder - sortOrder) * (barThickness + barGap);
+    }
+
   }
 }
 

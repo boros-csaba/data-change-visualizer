@@ -63,3 +63,7 @@ init();
 export function getItemOrder(name, time) {
     return sortOrderByTime[time].indexOf(name);
 }
+
+export function getMaxValue(time) {
+    return items.map(item => item.data[time]).reduce((a, b) => Math.max(a, b));
+}
