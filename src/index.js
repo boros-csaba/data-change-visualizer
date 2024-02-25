@@ -1,8 +1,8 @@
 import { items, timeLabels, getItemOrder, getMaxValue } from './data.js';
 import { Color, Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
-let width = 700;
-let height = 700;
+let width = 540;
+let height = 960;
 let cameraLeftMargin = 1;
 let cameraTopMargin = -1;
 let barThickness = 20;
