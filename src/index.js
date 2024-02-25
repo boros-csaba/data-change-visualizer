@@ -1,3 +1,4 @@
+import './styles/styles.scss'
 import { items, timeLabels, getItemOrder, getMaxValue } from './data.js';
 import { Color, Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
@@ -20,7 +21,7 @@ camera.position.y = cameraTopMargin;
 
 const renderer = new WebGLRenderer();
 renderer.setSize(width, height);
-document.body.appendChild(renderer.domElement);
+document.getElementById('render').appendChild(renderer.domElement);
 
 
 
