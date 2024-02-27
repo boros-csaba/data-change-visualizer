@@ -27,13 +27,49 @@ $bgWidth: 10000px;
 
   .inner-content {
     overflow: hidden;
+    display: flex;
+    gap: 30px;
     width: 100vw;
     max-width: 1400px;
     height: 100vh;
     max-height: 800px;
-    background: black;
-    border-radius: 50px;
     margin: 0 auto;
+    
+    box-sizing: border-box;
+
+    .editors {
+      background: black;
+      border-radius: 50px;
+      width: 100%;
+      padding: 50px;
+
+        .tabs {
+          display: flex;
+          gap: 50px;
+          color: white;
+          font-family: "Caveat", cursive;
+          font-optical-sizing: auto;
+          font-style: normal;
+          font-size: 32px;
+
+          .tab:hover {
+            cursor: pointer;
+            text-decoration: underline;
+          }
+        }
+    }
+
+    #render {
+      width: auto;
+      background: black;
+      border-radius: 20px;
+      padding: 10px;
+
+      canvas {
+        width: auto !important;
+        height: 780px !important;
+      }
+    }
   }
 }
 
