@@ -2,6 +2,7 @@ html,
 body {
   padding: 0px;
   margin: 0px;
+  box-sizing: border-box;
 }
 
 $bgWidth: 10000px;
@@ -34,10 +35,11 @@ $bgWidth: 10000px;
     height: 100vh;
     max-height: 800px;
     margin: 0 auto;
-    
-    box-sizing: border-box;
 
     .editors {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
       background: black;
       border-radius: 50px;
       width: 100%;
@@ -56,6 +58,10 @@ $bgWidth: 10000px;
             cursor: pointer;
             text-decoration: underline;
           }
+        }
+
+        .tab-content {
+          flex-grow: 1;
         }
     }
 
@@ -81,4 +87,12 @@ $bgWidth: 10000px;
   100% {
     background-position-x: $bgWidth;
   }
+}
+
+#data-tab {
+  display: flex;
+  background-color: red;
+
+  
+  
 }
