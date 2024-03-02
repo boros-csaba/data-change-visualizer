@@ -60,6 +60,10 @@ $bgWidth: 10000px;
           }
         }
 
+        .active {
+          text-decoration: underline;
+        }
+
         .tab-content {
           flex-grow: 1;
         }
