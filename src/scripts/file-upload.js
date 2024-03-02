@@ -1,4 +1,4 @@
-import { read } from "xlsx"
+import { read, utils } from "xlsx"
 
 export function addFileUploadEventListeners() {
   const fileInput = document.querySelector('input[type="file"]');
@@ -21,6 +21,19 @@ function onFileLoad(event) {
         { dateNF: "mm/dd/yyyy" }
       );
     let sheet = workbook.Sheets[workbook.SheetNames[0]];
-    console.log(sheet);
+    var rawData = utils.sheet_to_json(sheet, { header: 1 });
+    processData(rawData);
+}
+
+function processData(rawData) {
+  let timeLabels = rawData.map((row) => row[0]).slice(1);
+  let items = rawData[0].slice(1).map((name, index) => {
+    return {
+      name: name,
+      data: rawData.slice(1).map((row) => row[index + 1])
+    }
+  });
+  console.log(timeLabels);
+  console.log(items);
 }
 
