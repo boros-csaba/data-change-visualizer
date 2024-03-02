@@ -1,4 +1,5 @@
 import './styles/styles.scss'
+import { addFileUploadEventListeners } from './file-upload.js';
 import { items, timeLabels, getItemOrder, getMaxValue } from './data.js';
 import { Color, Scene, OrthographicCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh } from 'three';
 
@@ -26,6 +27,8 @@ document.getElementById('render').appendChild(renderer.domElement);
 
 
 function init() {
+
+  addFileUploadEventListeners();
 
   // create bars
   for (const item of items) {
