@@ -88,7 +88,7 @@ function setBarsWidth() {
   for (const item in items) {
     let barWidth = (items[item].data[time] / maxValue) * barMaxWidth;
 
-    if (time < items.length - 1) {
+    if (time < timeLabels.length - 1) {
       let nextMaxValue = getMaxValue(time + 1);
       let nextBarWidth =
         (items[item].data[time + 1] / nextMaxValue) * barMaxWidth;
