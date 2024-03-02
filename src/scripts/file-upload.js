@@ -1,4 +1,6 @@
 import { read, utils } from "xlsx"
+import { setupWithNewData } from "./data.js"
+import { startAnimation, stopAnimation, clearScene } from "./animation.js";
 
 export function addFileUploadEventListeners() {
   const fileInput = document.querySelector('input[type="file"]');
@@ -33,7 +35,10 @@ function processData(rawData) {
       data: rawData.slice(1).map((row) => row[index + 1])
     }
   });
-  console.log(timeLabels);
-  console.log(items);
+
+  stopAnimation();
+  clearScene();
+  setupWithNewData(timeLabels, items);
+  startAnimation();
 }
 

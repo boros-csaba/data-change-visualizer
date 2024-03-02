@@ -67,3 +67,10 @@ export function getItemOrder(name, time) {
 export function getMaxValue(time) {
     return items.map(item => item.data[time]).reduce((a, b) => Math.max(a, b));
 }
+
+export function setupWithNewData(newTimeLabels, newItems) {
+    timeLabels = newTimeLabels;
+    items = newItems;
+    sortOrderByTime = [];
+    init();
+}
