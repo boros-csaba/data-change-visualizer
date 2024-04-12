@@ -1,38 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
-</head>
-<body>
-
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div id="content">
-
-        <div class="inner-content">
-
-            <div class="editors">
-                <div class="tabs">
-                    <div class="tab active" id="tab1">#1. Add data</div>
-                    <div class="tab" id="tab2">#2. Customize</div>
-                    <div class="tab" id="tab3">#3. Download</div>
-                </div>
-
-                <div class="tab-content" id="data-tab" spellcheck="false">
-                    <div class="file-drop-area">
-                        <span class="file-button">Choose file</span>
-                        <span class="file-message">or drag and drop file here</span>
-                        <input class="file-input" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                    </div>
-                </div>
-            </div>
-            
-            <div id="render"></div>
+      <section id="section1">
+        <div class="section-inner">
+          <span class="section-title">Step #1. Add data</span>
+          <div class="file-drop-area">
+            <span class="file-button">Choose file</span>
+            <span class="file-message">or drag and drop file here</span>
+            <input
+              class="file-input"
+              type="file"
+              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            />
+          </div>
         </div>
+      </section>
+
+      <section id="section2">
+        <div class="section-inner">
+          <span class="section-title">Step #2. Customize</span>
+        </div>
+      </section>
+
+      <section id="section3">
+        <div class="section-inner">
+          <span class="section-title">Step #3. Download</span>
+        </div>
+      </section>
+
+      <div id="render-container">
+        <div id="render"></div>
+      </div>
+
+      <div class="inner-content">
+        <div class="editors">
+          <div class="tab-content" id="data-tab" spellcheck="false"></div>
+        </div>
+      </div>
     </div>
 
     <!-- <video utoplay controls></video> -->
-
-</body>
-</html>
+  </body>
 </html>

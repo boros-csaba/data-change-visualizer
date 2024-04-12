@@ -53,6 +53,7 @@ function addFileUploadEventListeners() {
 function handleFileUpload() {
     const fileInput = document.querySelector('input[type="file"]');
     const file = fileInput.files[0];
+    console.log(file);
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file)
     fileReader.onload = onFileLoad;
