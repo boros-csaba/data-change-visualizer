@@ -1,6 +1,8 @@
 import '../styles/styles.scss'
 import { startAnimation } from './animation.js';
+import { initFileUploadInput } from './file-upload.js';
 
+initFileUploadInput();
 startAnimation();
 
 document.getElementById('tab1').addEventListener('click', (_) => setActiveTab(1));

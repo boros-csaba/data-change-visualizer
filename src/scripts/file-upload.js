@@ -2,7 +2,50 @@ import { read, utils } from "xlsx"
 import { setupWithNewData } from "./data.js"
 import { startAnimation, stopAnimation, clearScene } from "./animation.js";
 
-export function addFileUploadEventListeners() {
+export function initFileUploadInput(){
+  addFileUploadEventListeners();
+
+  const fileInput = document.querySelector('input[type="file"]');;
+  const dropArea = document.querySelector('.file-drop-area');
+
+  fileInput.addEventListener('dragenter', function() {
+    dropArea.classList.add('is-active');
+  });
+
+  fileInput.addEventListener('focus', function() {
+    dropArea.classList.add('is-active');
+  });
+
+  fileInput.addEventListener('click', function() {
+    dropArea.classList.add('is-active');
+  });
+  
+  fileInput.addEventListener('dragleave blur drop', function() {
+    dropArea.classList.remove('is-active');
+  });
+
+  fileInput.addEventListener('blur', function() {
+    dropArea.classList.remove('is-active');
+  });
+
+  fileInput.addEventListener('drop', function() {
+    dropArea.classList.remove('is-active');
+  });
+  
+  fileInput.addEventListener('change', function() {
+    /*var filesCount = $(this)[0].files.length;
+    var $textContainer = $(this).prev();
+  
+    if (filesCount === 1) {
+      var fileName = $(this).val().split('\\').pop();
+      $textContainer.text(fileName);
+    } else {
+      $textContainer.text(filesCount + ' files selected');
+    }*/
+  });
+}
+
+function addFileUploadEventListeners() {
   const fileInput = document.querySelector('input[type="file"]');
   fileInput.addEventListener('change', (handleFileUpload));
 }

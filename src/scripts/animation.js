@@ -1,5 +1,4 @@
 import "../styles/styles.scss";
-import { addFileUploadEventListeners } from "./file-upload.js";
 import { items, timeLabels, getItemOrder, getMaxValue } from "./data.js";
 import {
   Color,
@@ -42,8 +41,7 @@ document.getElementById("render").appendChild(renderer.domElement);
 let isAnimationRunning = false;
 let frame = 0;
 export function startAnimation() {
-  addFileUploadEventListeners();
-
+  
   // create bars
   for (const item of items) {
     var geometry = new BoxGeometry(1, barThickness, 1);
