@@ -1,9 +1,9 @@
 import { read, utils } from "xlsx"
 import { setupWithNewData } from "./data.js"
-import { startAnimation, stopAnimation, clearScene } from "./animation.js";
 
-export function initFileUploadInput(){
-  addFileUploadEventListeners();
+export function initFileUploadInput(animation){
+
+  addFileUploadEventListeners(animation);
 
   const fileInput = document.querySelector('input[type="file"]');;
   const dropArea = document.querySelector('.file-drop-area');
@@ -45,21 +45,22 @@ export function initFileUploadInput(){
   });
 }
 
-function addFileUploadEventListeners() {
+function addFileUploadEventListeners(animation) {
   const fileInput = document.querySelector('input[type="file"]');
-  fileInput.addEventListener('change', (handleFileUpload));
+  fileInput.addEventListener('change', () => handleFileUpload(animation));
 }
 
-function handleFileUpload() {
+function handleFileUpload(animation) {
+    console.log("File uploaded", animation);
     const fileInput = document.querySelector('input[type="file"]');
     const file = fileInput.files[0];
     console.log(file);
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(file)
-    fileReader.onload = onFileLoad;
+    fileReader.onload = e => onFileLoad(e, animation);
 }
 
-function onFileLoad(event) {
+function onFileLoad(event, animation) {
     let fileData = event.target.result;
     let workbook = read(
         fileData,
@@ -68,10 +69,10 @@ function onFileLoad(event) {
       );
     let sheet = workbook.Sheets[workbook.SheetNames[0]];
     var rawData = utils.sheet_to_json(sheet, { header: 1 });
-    processData(rawData);
+    processData(rawData, animation);
 }
 
-function processData(rawData) {
+function processData(rawData, animation) {
   let timeLabels = rawData.map((row) => row[0]).slice(1);
   let items = rawData[0].slice(1).map((name, index) => {
     return {
@@ -80,9 +81,9 @@ function processData(rawData) {
     }
   });
 
-  stopAnimation();
-  clearScene();
+  animation.stopAnimation();
+  animation.clearScene();
   setupWithNewData(timeLabels, items);
-  startAnimation();
+  animation.startAnimation();
 }
 
