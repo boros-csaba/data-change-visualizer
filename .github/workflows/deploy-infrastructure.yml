@@ -7,9 +7,6 @@ on:
 
 jobs:
   deploy:
-    defaults:
-      run:
-        working-directory: infrastructure
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -31,3 +28,4 @@ jobs:
           cdk_subcommand: deploy
           cdk_stack: ViralChartVideos
           cdk_args: --require-approval never
+          working_dir: infrastructure 
