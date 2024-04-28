@@ -8,6 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_ROLE }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy infrastructure
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: deploy
+          cdk_stack: ViralChartVideos
+          cdk_args: --require-approval never
