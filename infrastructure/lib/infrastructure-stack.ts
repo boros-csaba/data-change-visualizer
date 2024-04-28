@@ -25,7 +25,8 @@ export class InfrastructureStack extends cdk.Stack {
       bucketName: 'viral-chart-video-source-files',
       versioned: false,
       publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
     const presignUrlRole = new iam.Role(this, 'PreSignedUrlLambdaRole', {
