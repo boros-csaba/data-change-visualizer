@@ -3,24 +3,13 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import { Payments } from './payments';
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const createStripeCheckoutSessionLambdaFunction = new lambda.Function(this, 'CreateStripeCheckoutSession', {
-      runtime: lambda.Runtime.NODEJS_LATEST,
-      handler: 'index.handler',
-      code: lambda.Code.fromAsset('lambda_functions/create_stripe_checkout_session/'),
-      environment: {
-        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
-        STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID || ''
-      }
-    });
-
-    createStripeCheckoutSessionLambdaFunction.addFunctionUrl({
-      authType: lambda.FunctionUrlAuthType.NONE
-    });
+    new Payments(this, 'Payments');
 
     const s3Bucket = new s3.Bucket(this, 'ViralChartVideoSourceFiles', {
       bucketName: 'viral-chart-video-source-files',
