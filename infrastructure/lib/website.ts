@@ -13,11 +13,7 @@ export class Website extends Construct {
         versioned: false,
         publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-        enforceSSL: true,
-        encryption: s3.BucketEncryption.S3_MANAGED,
-        accessControl: s3.BucketAccessControl.PRIVATE,
-        objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED
+        removalPolicy: cdk.RemovalPolicy.DESTROY
       });
 
       new cf.Distribution(this, 'ViralChartVideosWebsiteDistribution', {
@@ -26,9 +22,7 @@ export class Website extends Construct {
           compress: true,
           allowedMethods: cf.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
           viewerProtocolPolicy: cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-          originRequestPolicy: cf.OriginRequestPolicy.CORS_S3_ORIGIN,
-          cachedMethods: cf.CachedMethods.CACHE_GET_HEAD_OPTIONS,
-          responseHeadersPolicy: cf.ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS
+          originRequestPolicy: cf.OriginRequestPolicy.CORS_S3_ORIGIN
         },
         defaultRootObject: 'index.html'
       });
