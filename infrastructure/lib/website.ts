@@ -14,9 +14,11 @@ export class Website extends Construct {
     const zone = route53.HostedZone.fromLookup(this, 'Zone', { 
       domainName: 'viralchartvideos.com' 
     });
+    console.log(zone);
 
     const certificate = acm.Certificate.fromCertificateArn(this, 'Certificate',
       'arn:aws:acm:us-east-1:276612475684:certificate/2cbba065-2d53-4e69-ab5b-06f039d045e6');
+    console.log(certificate);
 
     const bucket = new s3.Bucket(this, 'ViralChartVideosWebsite', {
         bucketName: 'www.viralchartvideos.com',
