@@ -11,7 +11,10 @@ export class Website extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    const zone = route53.HostedZone.fromHostedZoneId(this, 'Zone', 'Z083150633MSD4PNK9DEF');
+    const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {
+      hostedZoneId: 'Z083150633MSD4PNK9DEF',
+      zoneName: 'viralchartvideos.com'
+    });
     console.log(zone);
 
     const certificate = acm.Certificate.fromCertificateArn(this, 'Certificate',
