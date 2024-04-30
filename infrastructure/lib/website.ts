@@ -9,7 +9,7 @@ export class Website extends Construct {
     super(scope, id);
 
     const bucket = new s3.Bucket(this, 'ViralChartVideosWebsite', {
-        bucketName: 'viral-chart-video-source-files', //todo, later should be same as domain name
+        bucketName: 'viral-chart-video-website', //todo, later should be same as domain name
         versioned: false,
         publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
