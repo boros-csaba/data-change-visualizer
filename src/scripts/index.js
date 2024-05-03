@@ -4,11 +4,13 @@ import { FileUploadHandler } from './file-upload-handler.js';
 import { download } from './video.js';
 
 const myApp = {
-    uploadedFileData: null
+    uploadedRawFileData: null,
 };
 
 const animation = new Animation();
-const fileUploadHandler = new FileUploadHandler();
+const fileUploadHandler = new FileUploadHandler(
+    (rawFileData) => (myApp.uploadedRawFileData = rawFileData)
+);
 fileUploadHandler.initFileUploadInput(animation);
 animation.startAnimation();
 

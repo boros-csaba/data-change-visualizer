@@ -2,6 +2,11 @@ import { read, utils } from 'xlsx';
 import { setupWithNewData } from './data.js';
 
 export class FileUploadHandler {
+    onRawFileDataAvailable = null;
+    constructor(onRawFileDataAvailable) {
+        this.onRawFileDataAvailable = onRawFileDataAvailable;
+    }
+
     initFileUploadInput(animation) {
         this.addFileUploadEventListeners(animation);
 
@@ -47,7 +52,9 @@ export class FileUploadHandler {
 
     addFileUploadEventListeners(animation) {
         const fileInput = document.querySelector('input[type="file"]');
-        fileInput.addEventListener('change', () => this.handleFileUpload(animation));
+        fileInput.addEventListener('change', () =>
+            this.handleFileUpload(animation)
+        );
     }
 
     handleFileUpload(animation) {
@@ -62,6 +69,9 @@ export class FileUploadHandler {
 
     onFileLoad(event, animation) {
         let fileData = event.target.result;
+        if (this.onRawFileDataAvailable) {
+            this.onRawFileDataAvailable(fileData);
+        }
         let workbook = read(
             fileData,
             { type: 'binary' },
