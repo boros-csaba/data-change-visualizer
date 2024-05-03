@@ -17,6 +17,10 @@
     "url": "https://github.com/boros-csaba/data-change-visualizer/issues"
   },
   "homepage": "https://github.com/boros-csaba/data-change-visualizer#readme",
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4
+  },
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
