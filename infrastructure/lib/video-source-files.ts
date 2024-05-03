@@ -27,6 +27,10 @@ export class VideoSourceFiles extends Construct {
 
       createS3UploadPresignedUrlLambdaFunction.addFunctionUrl({
         authType: lambda.FunctionUrlAuthType.NONE,
+        cors: {
+          allowedOrigins: ['*'], // todo allow only the frontend domain
+          allowedMethods: [lambda.HttpMethod.POST],
+        }
       });
   }
 }
