@@ -29,4 +29,4 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Deploy to S3
-        run: aws s3 sync ./dist s3://viral-chart-video-website
+        run: aws s3 sync ./dist s3://www.viralchartvideos.com
