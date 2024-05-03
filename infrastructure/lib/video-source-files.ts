@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class VideoSourceFiles extends Construct {
   constructor(scope: Construct, id: string) {
@@ -16,22 +15,7 @@ export class VideoSourceFiles extends Construct {
         removalPolicy: cdk.RemovalPolicy.DESTROY
       });
   
-     /* new iam.Role(this, 'PreSignedUrlLambdaRole', {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        inlinePolicies: {
-          'AllowS3BucketObjectAccess': new iam.PolicyDocument({
-            statements: [
-              new iam.PolicyStatement({
-                effect: iam.Effect.ALLOW,
-                actions: ['s3:PutObject'],
-                resources: [s3Bucket.bucketArn + '/*']
-              })
-            ]
-          })
-        }
-      });*/
-  
-      new lambda.Function(this, 'CreateS3UploadPresignedUrl', {
+      const createS3UploadPresignedUrlLambdaFunction = new lambda.Function(this, 'CreateS3UploadPresignedUrl', {
         runtime: lambda.Runtime.NODEJS_LATEST,
         handler: 'index.handler',
         code: lambda.Code.fromAsset('lambda_functions/create_s3_upload_presigned_url/'),
@@ -39,6 +23,10 @@ export class VideoSourceFiles extends Construct {
           BUCKET_NAME: s3Bucket.bucketName,
           BUCKET_ARN: s3Bucket.bucketArn
         }
+      });
+
+      createS3UploadPresignedUrlLambdaFunction.addFunctionUrl({
+        authType: lambda.FunctionUrlAuthType.NONE,
       });
   }
 }
