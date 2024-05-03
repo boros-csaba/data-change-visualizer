@@ -38,7 +38,8 @@ export class VideoSourceFiles extends Construct {
         environment: {
           BUCKET_NAME: s3Bucket.bucketName,
           BUCKET_ARN: s3Bucket.bucketArn,
-          PRESIGN_URL_ROLE_ARN: presignUrlRole.roleArn
+          PRESIGN_URL_ROLE_ARN: presignUrlRole.roleArn,
+          AWS_REGION: process.env.AWS_REGION || ''
         }
       });
   }
