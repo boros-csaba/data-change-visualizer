@@ -2,6 +2,8 @@ const { randomUUID } = require('crypto');
 
 exports.handler = async function (_) {
 
+    const objectKey = randomUUID();
+
     const s3Policy = {
         Version: '2012-10-17',
         Statement: [{
@@ -30,7 +32,7 @@ exports.handler = async function (_) {
 
     return await s3.getSignedUrl('putObject', {
         Bucket: process.env.BUCKET_NAME,
-        Key: randomUUID
+        Key: objectKey
     });
 
 }
