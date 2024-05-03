@@ -16,7 +16,7 @@ export class VideoSourceFiles extends Construct {
         removalPolicy: cdk.RemovalPolicy.DESTROY
       });
   
-      const presignUrlRole = new iam.Role(this, 'PreSignedUrlLambdaRole', {
+     /* new iam.Role(this, 'PreSignedUrlLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         inlinePolicies: {
           'AllowS3BucketObjectAccess': new iam.PolicyDocument({
@@ -29,7 +29,7 @@ export class VideoSourceFiles extends Construct {
             ]
           })
         }
-      });
+      });*/
   
       new lambda.Function(this, 'CreateS3UploadPresignedUrl', {
         runtime: lambda.Runtime.NODEJS_LATEST,
@@ -37,8 +37,7 @@ export class VideoSourceFiles extends Construct {
         code: lambda.Code.fromAsset('lambda_functions/create_s3_upload_presigned_url/'),
         environment: {
           BUCKET_NAME: s3Bucket.bucketName,
-          BUCKET_ARN: s3Bucket.bucketArn,
-          PRESIGN_URL_ROLE_ARN: presignUrlRole.roleArn
+          BUCKET_ARN: s3Bucket.bucketArn
         }
       });
   }
