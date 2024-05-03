@@ -1,4 +1,5 @@
 const { randomUUID } = require('crypto');
+const AWS = require('aws-sdk');
 
 exports.handler = async function (_) {
 
