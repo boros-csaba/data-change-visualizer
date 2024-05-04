@@ -1,36 +1,47 @@
-import { Construct } from "constructs";
+import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 
 export class VideoSourceFiles extends Construct {
-  constructor(scope: Construct, id: string) {
-    super(scope, id);
+    constructor(scope: Construct, id: string) {
+        super(scope, id);
 
-    const s3Bucket = new s3.Bucket(this, 'ViralChartVideoSourceFiles', {
-        bucketName: 'viral-chart-video-source-files',
-        versioned: false,
-        publicReadAccess: false,
-        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-        removalPolicy: cdk.RemovalPolicy.DESTROY
-      });
-  
-      const createS3UploadPresignedUrlLambdaFunction = new lambda.Function(this, 'CreateS3UploadPresignedUrl', {
-        runtime: lambda.Runtime.NODEJS_LATEST,
-        handler: 'index.handler',
-        code: lambda.Code.fromAsset('lambda_functions/create_s3_upload_presigned_url/'),
-        environment: {
-          BUCKET_NAME: s3Bucket.bucketName,
-          BUCKET_ARN: s3Bucket.bucketArn
-        }
-      });
+        const s3Bucket = new s3.Bucket(this, 'ViralChartVideoSourceFiles', {
+            bucketName: 'viral-chart-video-source-files',
+            versioned: false,
+            publicReadAccess: false,
+            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+        });
 
-      createS3UploadPresignedUrlLambdaFunction.addFunctionUrl({
-        authType: lambda.FunctionUrlAuthType.NONE,
-        cors: {
-          allowedOrigins: ['*'], // todo allow only the frontend domain
-          allowedMethods: [lambda.HttpMethod.POST],
-        }
-      });
-  }
+        s3Bucket.addCorsRule({
+            allowedMethods: [s3.HttpMethods.PUT],
+            allowedOrigins: ['*'], // todo allow only the frontend domain
+        });
+
+        const createS3UploadPresignedUrlLambdaFunction = new lambda.Function(
+            this,
+            'CreateS3UploadPresignedUrl',
+            {
+                runtime: lambda.Runtime.NODEJS_LATEST,
+                handler: 'index.handler',
+                code: lambda.Code.fromAsset(
+                    'lambda_functions/create_s3_upload_presigned_url/'
+                ),
+                environment: {
+                    BUCKET_NAME: s3Bucket.bucketName,
+                    BUCKET_ARN: s3Bucket.bucketArn,
+                },
+            }
+        );
+
+        createS3UploadPresignedUrlLambdaFunction.addFunctionUrl({
+            authType: lambda.FunctionUrlAuthType.NONE,
+            cors: {
+                allowedOrigins: ['*'], // todo allow only the frontend domain
+                allowedMethods: [lambda.HttpMethod.POST],
+            },
+        });
+    }
 }
