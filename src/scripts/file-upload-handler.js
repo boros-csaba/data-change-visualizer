@@ -63,7 +63,7 @@ export class FileUploadHandler {
         const file = fileInput.files[0];
         console.log(file);
         let fileReader = new FileReader();
-        fileReader.readAsBinaryString(file);
+        fileReader.readAsArrayBuffer(file);
         fileReader.onload = (e) => this.onFileLoad(e, animation);
     }
 

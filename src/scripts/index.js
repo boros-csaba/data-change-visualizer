@@ -39,7 +39,8 @@ async function uploadDataToS3(s3Url) {
     const url = new URL(s3Url);
     let response = await fetch(url, {
         method: 'PUT',
-        body: app.uploadedRawFileData,
+        body: new File([app.uploadedRawFileData], "file"),
+        
     });
 
     return response.text();
