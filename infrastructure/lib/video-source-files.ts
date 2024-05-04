@@ -43,5 +43,7 @@ export class VideoSourceFiles extends Construct {
                 allowedMethods: [lambda.HttpMethod.POST],
             },
         });
+
+        s3Bucket.grantPut(createS3UploadPresignedUrlLambdaFunction);
     }
 }
