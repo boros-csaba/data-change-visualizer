@@ -2,7 +2,7 @@ const { randomUUID } = require('crypto');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 
-const s3Client = new S3Client({ region: process.env.BUCKET_NAME });
+const s3Client = new S3Client({ region: process.env.AWS_REGION });
 
 exports.handler = async function (_) {
 
