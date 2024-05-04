@@ -3,13 +3,13 @@ import { Animation } from './animation.js';
 import { FileUploadHandler } from './file-upload-handler.js';
 import { download } from './video.js';
 
-const myApp = {
+const app = {
     uploadedRawFileData: null,
 };
 
 const animation = new Animation();
 const fileUploadHandler = new FileUploadHandler(
-    (rawFileData) => (myApp.uploadedRawFileData = rawFileData)
+    (rawFileData) => (app.uploadedRawFileData = rawFileData)
 );
 fileUploadHandler.initFileUploadInput(animation);
 animation.startAnimation();
@@ -39,7 +39,7 @@ async function uploadDataToS3(s3Url) {
     const url = new URL(s3Url);
     let response = await fetch(url, {
         method: 'PUT',
-        body: animation.getVideoBlob(),
+        body: app.uploadedRawFileData,
     });
 
     return response.text();
