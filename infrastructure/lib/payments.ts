@@ -7,7 +7,7 @@ export class Payments extends Construct {
     constructor(scope: Construct, id: string) {
         super(scope, id);
 
-        const lambdaDir = path.resolve(__dirname, '../lambda_functions/create_stripe_checkout_session');
+        const lambdaDir = path.resolve(__dirname, 'lambda_functions/create_stripe_checkout_session');
 
         const createStripeCheckoutSessionLambdaFunction = new nodejs.NodejsFunction(
             this,
