@@ -22,6 +22,10 @@ jobs:
           role-to-assume: ${{ vars.AWS_GITHUB_ACTIONS_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Install packages
+        working-directory: infrastructure/lambda_functions/create_stripe_checkout_session
+        run: npm ci
+
       - name: Deploy infrastructure
         uses: youyo/aws-cdk-github-actions@v2
         with:
