@@ -56,9 +56,7 @@ async function initiatePayment(fileId) {
 
     let response = await fetch(url, {
         method: 'POST',
-        headers: {
-            body: fileId
-        },
+        body: fileId
     });
 
     console.log(response);
