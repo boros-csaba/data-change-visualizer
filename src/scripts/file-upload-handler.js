@@ -58,10 +58,8 @@ export class FileUploadHandler {
     }
 
     handleFileUpload(animation) {
-        console.log('File uploaded', animation);
         const fileInput = document.querySelector('input[type="file"]');
         const file = fileInput.files[0];
-        console.log(file);
         let fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
         fileReader.onload = (e) => this.onFileLoad(e, animation);

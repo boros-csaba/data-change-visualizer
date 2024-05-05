@@ -18,9 +18,13 @@ window.onload = () => {
     document
         .getElementsByClassName('download-button')[0]
         .addEventListener('click', async () => {
+
             let uploadUrl = await getS3PresignedUrl();
             await uploadDataToS3(uploadUrl);
-            download();
+            const fileId = new URL(uploadUrl).pathname.split('/').pop();
+            await initiatePayment(fileId);
+
+            //download();
         });
 };
 
@@ -39,9 +43,23 @@ async function uploadDataToS3(s3Url) {
     const url = new URL(s3Url);
     let response = await fetch(url, {
         method: 'PUT',
-        body: new File([app.uploadedRawFileData], "file"),
-        
+        body: new File([app.uploadedRawFileData], 'file'),
     });
 
     return response.text();
+}
+
+async function initiatePayment(fileId) {
+    const url = new URL(
+        'https://6jizzqdpcxsrn2fe5nqo6cjvay0duknl.lambda-url.us-west-1.on.aws/'
+    );
+
+    let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            body: fileId
+        },
+    });
+
+    console.log(response);
 }
