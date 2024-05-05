@@ -15,7 +15,7 @@ export class Payments extends Construct {
             {
                 projectRoot: lambdaDir,
                 runtime: lambda.Runtime.NODEJS_LATEST,
-                //handler: 'handler',
+                handler: 'index.handler',
                 entry: path.join(lambdaDir, 'index.js'),
                 depsLockFilePath: path.join(lambdaDir, 'package-lock.json'),
                 environment: {
