@@ -17,7 +17,7 @@ export class Payments extends Construct {
                 runtime: lambda.Runtime.NODEJS_LATEST,
                 //handler: 'handler',
                 entry: path.join(lambdaDir, 'index.js'),
-                //depsLockFilePath: path.join(lambdaDir, 'package-lock.json'),
+                depsLockFilePath: path.join(lambdaDir, 'package-lock.json'),
                 environment: {
                     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
                     STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID || '',
