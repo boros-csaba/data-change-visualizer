@@ -11,6 +11,7 @@ export class Payments extends Construct {
             'CreateStripeCheckoutSession',
             {
                 runtime: lambda.Runtime.NODEJS_LATEST,
+                handler: 'index.handler',
                 entry: '/lambda_functions/create_stripe_checkout_session/index.js',
                 environment: {
                     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || '',
