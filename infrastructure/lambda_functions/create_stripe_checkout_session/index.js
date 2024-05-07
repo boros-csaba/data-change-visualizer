@@ -5,6 +5,7 @@ exports.handler = async function (event) {
 
     console.log('event', event);
     console.log('slen', process.env.STRIPE_SECRET_KEY.length);
+    console.log('priceid', process.env.STRIPE_PRICE_ID);
 
     const session = await stripe.checkout.sessions.create({
         line_items: [{

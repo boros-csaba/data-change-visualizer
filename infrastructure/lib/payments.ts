@@ -5,6 +5,9 @@ export class Payments extends Construct {
     constructor(scope: Construct, id: string) {
         super(scope, id);
 
+        console.log('STRIPE_PRICE_ID', process.env.STRIPE_PRICE_ID);
+        console.log('STRIPE_SECRET_KEY', process.env.STRIPE_SECRET_KEY?.length);
+
         const createStripeCheckoutSessionLambdaFunction = new lambda.Function(
             this,
             'CreateStripeCheckoutSession',
