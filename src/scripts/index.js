@@ -1,7 +1,6 @@
 import '../styles/styles.scss';
 import { Animation } from './animation.js';
 import { FileUploadHandler } from './file-upload-handler.js';
-import { download } from './video.js';
 
 const app = {
     uploadedRawFileData: null,
@@ -18,13 +17,11 @@ window.onload = () => {
     document
         .getElementsByClassName('download-button')[0]
         .addEventListener('click', async () => {
-
             let uploadUrl = await getS3PresignedUrl();
             await uploadDataToS3(uploadUrl);
             const fileId = new URL(uploadUrl).pathname.split('/').pop();
-            await initiatePayment(fileId);
-
-            //download();
+            const paymentUrl = await getPaymentUrl(fileId);
+            window.location.href = paymentUrl;
         });
 };
 
@@ -49,15 +46,15 @@ async function uploadDataToS3(s3Url) {
     return response.text();
 }
 
-async function initiatePayment(fileId) {
+async function getPaymentUrl(fileId) {
     const url = new URL(
         'https://6jizzqdpcxsrn2fe5nqo6cjvay0duknl.lambda-url.us-west-1.on.aws/'
     );
 
     let response = await fetch(url, {
         method: 'POST',
-        body: fileId
+        body: fileId,
     });
 
-    console.log(response);
+    return response.text();
 }

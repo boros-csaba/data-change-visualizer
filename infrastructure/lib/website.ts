@@ -35,9 +35,10 @@ export class Website extends Construct {
           origin: new cfo.S3Origin(bucket),
           compress: true,
           allowedMethods: cf.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-          viewerProtocolPolicy: cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS
+          viewerProtocolPolicy: cf.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          cachePolicy: cf.CachePolicy.CACHING_DISABLED, //todo remove, just for testing
         },
-        defaultRootObject: 'index.html'
+        defaultRootObject: 'index.html',
       });
 
       new route53.ARecord(this, 'ViralChartVideosWebsiteAliasRecord', {
