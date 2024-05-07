@@ -3,7 +3,8 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async function (event) {
 
-    console.log(event);
+    console.log('event', event);
+    console.log('slen', process.env.STRIPE_SECRET_KEY.length);
 
     const session = await stripe.checkout.sessions.create({
         line_items: [{
