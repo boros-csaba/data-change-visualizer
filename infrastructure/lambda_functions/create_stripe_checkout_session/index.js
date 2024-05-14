@@ -14,8 +14,7 @@ exports.handler = async function (event) {
         },
         mode: 'payment',
         success_url: 'https://localhost/success',
-        cancel_url: 'https://localhost/cancel',
-        description: 'Thank you for your purchase! You can download your file using the following link: https://viralchartvideos.com/download' + event.body,
+        cancel_url: 'https://localhost/cancel'
     });
 
     return session.url;
