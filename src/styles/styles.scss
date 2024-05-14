@@ -104,6 +104,16 @@ $bgWidth: 10000px;
   }
 }
 
+.value-proposition-container {
+  .value-proposition-section-title {
+    font-size: 58px;
+    color: white;
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+}
+
 .file-drop-area {
   position: relative;
   display: flex;
