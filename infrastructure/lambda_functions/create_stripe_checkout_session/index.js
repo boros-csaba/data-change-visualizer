@@ -13,8 +13,8 @@ exports.handler = async function (event) {
             enabled: true
         },
         mode: 'payment',
-        success_url: 'https://localhost/success',
-        cancel_url: 'https://localhost/cancel'
+        success_url: 'https://localhost/download?s={CHECKOUT_SESSION_ID}&v=' + event.body,
+        cancel_url: 'https://localhost/' // todo handle cancel
     });
 
     return session.url;
