@@ -42,10 +42,6 @@ module.exports = {
                 use: ['css-loader', 'sass-loader'],
             },
             {
-                test: /\.html$/,
-                loader: HtmlBundlerPlugin.loader, // HTML loader
-            },
-            {
                 test: /\.(png|jpe?g|ico)/,
                 type: 'asset/resource',
                 generator: {
