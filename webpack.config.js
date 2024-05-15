@@ -1,18 +1,56 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlBundlerPlugin = require('html-bundler-webpack-plugin');
 
 module.exports = {
     mode: 'development',
-    entry: path.resolve(__dirname, 'src/scripts/index.js'),
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: '[name][contenthash].js'
+        path: path.join(__dirname, 'dist/'),
+        publicPath: '/',
+        clean: true
     },
+
+    resolve: {
+        alias: {
+          '@scripts': path.join(__dirname, 'src/scripts'),
+          '@styles': path.join(__dirname, 'src/styles'),
+          '@images': path.join(__dirname, 'src/images'),
+        },
+      },
+
+    entry: {
+        // define HTML files here
+        index: './src/index.html',
+        download: './src/download.html',
+        // ...
+    },
+
+    plugins: [
+        new HtmlBundlerPlugin({
+            js: {
+                filename: 'assets/js/[name].[contenthash:8].js',
+            },
+            css: {
+                filename: 'assets/css/[name].[contenthash:8].css',
+            },
+        }),
+    ],
+
     module: {
         rules: [
             {
                 test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
+                use: ['css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.html$/,
+                loader: HtmlBundlerPlugin.loader, // HTML loader
+            },
+            {
+                test: /\.(png|jpe?g|ico)/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/img/[name].[hash:8][ext]',
+                },
             },
             {
                 test: /\.js$/,
@@ -20,24 +58,10 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            }
-        ]
+                        presets: ['@babel/preset-env'],
+                    },
+                },
+            },
+        ],
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: 'src/index.html'
-        })
-    ],
-    devServer: {
-        static: {
-            directory: path.resolve(__dirname, 'dist'),
-        },
-        port: 3000,
-        open: true,
-        hot: true
-    },
-}
+};
