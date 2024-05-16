@@ -17,7 +17,7 @@ export class VideoSourceFiles extends Construct {
         s3Bucket.grantRead(new iam.AnyPrincipal());
 
         s3Bucket.addCorsRule({
-            allowedMethods: [s3.HttpMethods.PUT],
+            allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT],
             allowedOrigins: ['*'], // todo allow only the frontend domain
         });
 
