@@ -26,6 +26,10 @@ jobs:
         working-directory: infrastructure/lambda_functions/create_stripe_checkout_session
         run: npm ci
 
+      - name: Install packages
+        working-directory: infrastructure/lambda_functions/get_stripe_checkout_session_data
+        run: npm ci
+
       - name: Deploy infrastructure
         uses: youyo/aws-cdk-github-actions@v2
         with:

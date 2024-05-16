@@ -1,0 +1,7 @@
+{
+  "name": "get_stripe_checkout_session_data",
+  "version": "1.0.0",
+  "dependencies": {
+    "stripe": "^15.4.0"
+  }
+}
