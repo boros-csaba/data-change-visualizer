@@ -173,3 +173,22 @@ $bgWidth: 10000px;
   margin: 20px 0;
   cursor: pointer;
 }
+
+.download-page-content {
+  color: white;
+  font-family: "Caveat", cursive;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 24px;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .download-page-title {
+      font-size: 58px;
+      
+    }
+  }
+}
