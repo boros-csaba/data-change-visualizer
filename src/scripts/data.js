@@ -1,3 +1,18 @@
+import { read, utils } from 'xlsx';
+
+export class Data {
+
+    items = [];
+
+    constructor(arrayBuffer) {
+        let workbook = read(
+            arrayBuffer,
+            { type: 'binary' },
+            { dateNF: 'mm/dd/yyyy' }
+        );
+    }
+}
+
 export let timeLabels = [
     "2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", "2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4", "2012 Q1", "2012 Q2"
 ];

@@ -58,6 +58,10 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.xlsx$/,
+                use: ['arraybuffer-loader'],
+            },
         ],
     },
 };

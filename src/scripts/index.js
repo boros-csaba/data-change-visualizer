@@ -1,6 +1,8 @@
 import '../styles/styles.scss';
 import { Animation } from './animation.js';
+import { Data } from './data.js'; 
 import { FileUploadHandler } from './file-upload-handler.js';
+import demoDataArrayBuffer from 'arraybuffer-loader!../demo-data.xlsx';
 
 const app = {
     uploadedRawFileData: null,
@@ -8,12 +10,21 @@ const app = {
 };
 
 async function init() {
-    app.animation = new Animation("render");
+
+    let demoData = new Data(demoDataArrayBuffer);
+    app.animation = new Animation("render", demoData);
+
     const fileUploadHandler = new FileUploadHandler(
-        (rawFileData) => (app.uploadedRawFileData = rawFileData)
+        (rawFileData) => (app.uploadedRawFileData = rawFileData),
+        (data) => onNewDataAvailable(data)
     );
+
     fileUploadHandler.initFileUploadInput(app.animation);
     app.animation.startAnimation();
+}
+
+function onNewDataAvailable(data) {
+    app.animation = new Animation("render", data);
 }
 
 

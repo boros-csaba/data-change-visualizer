@@ -1,9 +1,14 @@
 import { read, utils } from 'xlsx';
 import { setupWithNewData } from './data.js';
+import { Data } from './data.js'; 
 
 export class FileUploadHandler {
+
+    onDataAvailable = null;
     onRawFileDataAvailable = null;
-    constructor(onRawFileDataAvailable) {
+
+    constructor(onRawFileDataAvailable, onDataAvailable) {
+        this.onDataAvailable = onDataAvailable;
         this.onRawFileDataAvailable = onRawFileDataAvailable;
     }
 
@@ -67,6 +72,9 @@ export class FileUploadHandler {
 
     onFileLoad(event, animation) {
         let fileData = event.target.result;
+
+        var data = new Data(fileData);
+
         if (this.onRawFileDataAvailable) {
             this.onRawFileDataAvailable(fileData);
         }

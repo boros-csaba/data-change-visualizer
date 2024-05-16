@@ -36,7 +36,7 @@ export class Animation {
     1000
   );
 
-  constructor(domElementId) {
+  constructor(domElementId, data) {
     this.scene.background = new Color(0xffffff);
     this.camera.position.z = 2;
     this.camera.position.x = this.cameraLeftMargin;
