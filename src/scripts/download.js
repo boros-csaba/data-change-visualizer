@@ -8,10 +8,11 @@ async function downloadVideo() {
     let paymentSessionId = urlParams.get('s');
     let paymentSessionData = await getPaymentSessionDataUrl(paymentSessionId);
     // todo handle failure
-
-    let fileId = paymentSessionData.
-    console.log(paymentSessionData);
-
+    let fileId = paymentSessionData.fileId;
+    
+    subtitle.innerHTML = 'Processing video source data...' + fileId;
+    let sourceFile = await downloadSourceFileFromS3(fileId);
+    console.log(sourceFile);
 }
 
 async function getPaymentSessionDataUrl(paymentSessionId) {
@@ -25,6 +26,18 @@ async function getPaymentSessionDataUrl(paymentSessionId) {
     });
 
     return response.json();
+}
+
+async function downloadSourceFileFromS3(fileId) {
+    const url = new URL(
+        'https://viral-chart-video-source-files.s3.us-west-1.amazonaws.com/' + fileId
+    );
+
+    let response = await fetch(url, {
+        method: 'GET'
+    });
+
+    return response.blob();
 }
 
 window.onload = downloadVideo();
