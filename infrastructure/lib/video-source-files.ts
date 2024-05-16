@@ -11,8 +11,6 @@ export class VideoSourceFiles extends Construct {
         const s3Bucket = new s3.Bucket(this, 'ViralChartVideoSourceFiles', {
             bucketName: 'viral-chart-video-source-files',
             versioned: false,
-            publicReadAccess: false,
-            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
