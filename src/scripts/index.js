@@ -4,14 +4,18 @@ import { FileUploadHandler } from './file-upload-handler.js';
 
 const app = {
     uploadedRawFileData: null,
+    animation: null
 };
 
-const animation = new Animation();
-const fileUploadHandler = new FileUploadHandler(
-    (rawFileData) => (app.uploadedRawFileData = rawFileData)
-);
-fileUploadHandler.initFileUploadInput(animation);
-animation.startAnimation();
+async function init() {
+    app.animation = new Animation();
+    const fileUploadHandler = new FileUploadHandler(
+        (rawFileData) => (app.uploadedRawFileData = rawFileData)
+    );
+    fileUploadHandler.initFileUploadInput(app.animation);
+    app.animation.startAnimation();
+}
+
 
 window.onload = () => {
     document
@@ -58,3 +62,5 @@ async function getPaymentUrl(fileId) {
 
     return response.text();
 }
+
+window.onload = init();
