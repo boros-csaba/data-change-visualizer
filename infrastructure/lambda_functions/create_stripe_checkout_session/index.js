@@ -9,9 +9,6 @@ exports.handler = async function (event) {
             quantity: 1
         }],
         client_reference_id: event.body,
-        automatic_tax: {
-            enabled: true
-        },
         mode: 'payment',
         success_url: 'https://localhost/download.html?s={CHECKOUT_SESSION_ID}',
         cancel_url: 'https://localhost/' // todo handle cancel

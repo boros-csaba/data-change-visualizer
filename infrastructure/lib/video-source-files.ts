@@ -2,6 +2,7 @@ import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as iam from 'aws-cdk-lib/aws-iam';
 
 export class VideoSourceFiles extends Construct {
     constructor(scope: Construct, id: string) {
@@ -14,6 +15,15 @@ export class VideoSourceFiles extends Construct {
             blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
+
+        s3Bucket.addToResourcePolicy(
+            new iam.PolicyStatement({
+                actions: ['s3:GetObject'],
+                resources: [s3Bucket.bucketArn + '/*'],
+                principals: [new iam.AnyPrincipal()],
+                effect: iam.Effect.ALLOW,
+            })
+        )
 
         s3Bucket.addCorsRule({
             allowedMethods: [s3.HttpMethods.PUT],
