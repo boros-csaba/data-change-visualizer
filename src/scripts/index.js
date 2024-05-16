@@ -8,7 +8,7 @@ const app = {
 };
 
 async function init() {
-    app.animation = new Animation();
+    app.animation = new Animation("render");
     const fileUploadHandler = new FileUploadHandler(
         (rawFileData) => (app.uploadedRawFileData = rawFileData)
     );

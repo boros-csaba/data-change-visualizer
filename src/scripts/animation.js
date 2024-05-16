@@ -36,13 +36,13 @@ export class Animation {
     1000
   );
 
-  constructor() {
+  constructor(domElementId) {
     this.scene.background = new Color(0xffffff);
     this.camera.position.z = 2;
     this.camera.position.x = this.cameraLeftMargin;
     this.camera.position.y = this.cameraTopMargin;
     this.renderer.setSize(this.width, this.height);
-    document.getElementById("render").appendChild(this.renderer.domElement);
+    document.getElementById(domElementId).appendChild(this.renderer.domElement);
   }
 
   startAnimation() {
