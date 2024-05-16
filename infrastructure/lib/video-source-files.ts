@@ -16,7 +16,14 @@ export class VideoSourceFiles extends Construct {
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
-        
+        s3Bucket.addToResourcePolicy(
+            new iam.PolicyStatement({
+                actions: ['s3:GetObject'],
+                resources: [s3Bucket.bucketArn, s3Bucket.bucketArn + "/*"],
+                principals: [new iam.AnyPrincipal()],
+                effect: iam.Effect.ALLOW,
+            })
+        )
 
         s3Bucket.addCorsRule({
             allowedMethods: [s3.HttpMethods.PUT],
