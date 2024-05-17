@@ -1,5 +1,4 @@
 import { read, utils } from 'xlsx';
-import { setupWithNewData } from './data.js';
 import { Data } from './data.js'; 
 
 export class FileUploadHandler {
@@ -99,7 +98,6 @@ export class FileUploadHandler {
 
         animation.stopAnimation();
         animation.clearScene();
-        setupWithNewData(timeLabels, items);
         animation.startAnimation();
     }
 }

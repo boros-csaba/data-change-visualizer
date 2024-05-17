@@ -2,7 +2,7 @@ import '../styles/styles.scss';
 import { Animation } from './animation.js';
 import { Data } from './data.js'; 
 import { FileUploadHandler } from './file-upload-handler.js';
-import demoDataArrayBuffer from 'arraybuffer-loader!../demo-data.xlsx';
+import demoDataArrayBufferPath from '../demo-data.xlsx';
 
 const app = {
     uploadedRawFileData: null,
@@ -11,7 +11,8 @@ const app = {
 
 async function init() {
 
-    let demoData = new Data(demoDataArrayBuffer);
+    let demoFile = await (await fetch(demoDataArrayBufferPath)).arrayBuffer();
+    let demoData = new Data(demoFile);
     app.animation = new Animation("render", demoData);
 
     const fileUploadHandler = new FileUploadHandler(
@@ -25,6 +26,7 @@ async function init() {
 
 function onNewDataAvailable(data) {
     app.animation = new Animation("render", data);
+    console.log('xxx');
 }
 
 

@@ -24,7 +24,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
-    "arraybuffer-loader": "^1.0.8",
     "babel-loader": "^9.1.3",
     "css-loader": "^6.10.0",
     "html-bundler-webpack-plugin": "^3.11.0",

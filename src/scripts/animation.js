@@ -1,5 +1,4 @@
 import "../styles/styles.scss";
-import { items, timeLabels, getItemOrder, getMaxValue } from "./data.js";
 import {
   Color,
   Scene,
@@ -12,6 +11,7 @@ import {
 
 export class Animation {
 
+  data = null;
   width = 540;
   height = 960;
   cameraLeftMargin = 1;
@@ -37,17 +37,20 @@ export class Animation {
   );
 
   constructor(domElementId, data) {
+
+    this.data = data;
     this.scene.background = new Color(0xffffff);
     this.camera.position.z = 2;
     this.camera.position.x = this.cameraLeftMargin;
     this.camera.position.y = this.cameraTopMargin;
     this.renderer.setSize(this.width, this.height);
     document.getElementById(domElementId).appendChild(this.renderer.domElement);
+
   }
 
   startAnimation() {
 
-    for (const item of items) {
+    for (const item of this.data.items) {
       var geometry = new BoxGeometry(1, this.barThickness, 1);
       var material = new MeshBasicMaterial({ color: 0x00ff00 });
       item.bar = new Mesh(geometry, material);
@@ -64,7 +67,7 @@ export class Animation {
   }
 
   clearScene() {
-    for (const item of items) {
+    for (const item of this.data.items) {
       this.scene.remove(item.bar);
     }
   }
@@ -86,22 +89,22 @@ export class Animation {
 
   setBarsWidth() {
     let time = this.getTime();
-    var maxValue = getMaxValue(time);
+    var maxValue = this.data.getMaxValue(time);
 
-    for (const item in items) {
-      let barWidth = (items[item].data[time] / maxValue) * this.barMaxWidth;
+    for (const item in this.data.items) {
+      let barWidth = (this.data.items[item].data[time] / maxValue) * this.barMaxWidth;
 
-      if (time < timeLabels.length - 1) {
-        let nextMaxValue = getMaxValue(time + 1);
+      if (time < this.data.timeLabels.length - 1) {
+        let nextMaxValue = this.data.getMaxValue(time + 1);
         let nextBarWidth =
-          (items[item].data[time + 1] / nextMaxValue) * this.barMaxWidth;
+          (this.data.items[item].data[time + 1] / nextMaxValue) * this.barMaxWidth;
         var timeFrame = this.frame % this.framesBetweenTimeChange;
         barWidth =
           (timeFrame / this.framesBetweenTimeChange) * (nextBarWidth - barWidth) +
           barWidth;
       }
 
-      items[item].bar.scale.x = barWidth;
+      this.data.items[item].bar.scale.x = barWidth;
     }
   }
 
@@ -110,15 +113,15 @@ export class Animation {
     let barsAreaHeight = (this.barThickness + this.barGap) * this.maxNrOfBarsToShow;
     let barsAreaTop = barsAreaHeight / 2;
 
-    for (const item of items) {
-      var sortOrder = getItemOrder(item.name, time);
+    for (const item of this.data.items) {
+      var sortOrder = this.data.getItemOrder(item.name, time);
 
       item.bar.position.y =
         barsAreaTop - this.barThickness / 2 - sortOrder * (this.barThickness + this.barGap);
       item.bar.position.x = item.bar.scale.x / 2 - this.barMaxWidth / 2;
 
-      if (time < timeLabels.length - 1) {
-        var nextSortOrder = getItemOrder(item.name, time + 1);
+      if (time < this.data.timeLabels.length - 1) {
+        var nextSortOrder = this.data.getItemOrder(item.name, time + 1);
         var timeFrame = this.frame % this.framesBetweenTimeChange;
 
         item.bar.position.y -=
@@ -131,8 +134,8 @@ export class Animation {
 
   getTime() {
     let time = Math.floor(this.frame / this.framesBetweenTimeChange);
-    if (time >= timeLabels.length) {
-      time = timeLabels.length - 1;
+    if (time >= this.data.timeLabels.length) {
+      time = this.data.timeLabels.length - 1;
     }
     return time;
   }

@@ -37,7 +37,7 @@ async function downloadSourceFileFromS3(fileId) {
         method: 'GET'
     });
 
-    return response.blob();
+    return response.arrayBuffer();
 }
 
 window.onload = downloadVideo();

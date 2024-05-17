@@ -60,7 +60,7 @@ module.exports = {
             },
             {
                 test: /\.xlsx$/,
-                use: ['arraybuffer-loader'],
+                type: 'asset/resource',
             },
         ],
     },
