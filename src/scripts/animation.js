@@ -60,6 +60,52 @@ export class Animation {
     this.isAnimationRunning = true;
     this.frame = 0;
     this.animate();
+
+  }
+
+  download() {
+
+    let canvas = document.querySelector('canvas');
+    console.log(canvas);
+    let videoStream = canvas.captureStream();
+    let mediaRecorder = new MediaRecorder(videoStream, {mimeType: 'video/mp4;codecs=h264'});
+    mediaRecorder.start();
+    this.startAnimation();
+
+    videoStream.getVideoTracks()[0].requestFrame();
+    var chunks = [];
+    mediaRecorder.ondataavailable = function(e) {
+      console.log(e);
+      if (e.data) {
+        chunks.push(e.data);
+      }
+    };
+
+    mediaRecorder.onstop = function(e) {
+      var blob = new Blob(chunks, { 'type' : 'video/mp4;codecs=h264' });
+      console.log(chunks);
+      console.log(blob);
+      chunks = [];
+        var videoURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = videoURL;
+        link.download = 'video.mp4';
+        link.dispatchEvent(new MouseEvent('click'), {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+
+        setTimeout(() => {  
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      };
+
+    setTimeout(function () { 
+      mediaRecorder.stop(); 
+      console.log("Stop")
+    }, 5000); // todo calculate duration
   }
 
   stopAnimation() {

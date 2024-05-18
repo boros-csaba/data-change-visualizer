@@ -26,7 +26,6 @@ async function init() {
 
 function onNewDataAvailable(data) {
     app.animation = new Animation("render", data);
-    console.log('xxx');
 }
 
 

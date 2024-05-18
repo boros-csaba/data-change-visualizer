@@ -1,4 +1,7 @@
 
+import { Data } from './data.js';
+import { Animation } from './animation.js';
+
 async function downloadVideo() {
 
     let subtitle = document.getElementById('subtitle');
@@ -10,9 +13,14 @@ async function downloadVideo() {
     // todo handle failure
     let fileId = paymentSessionData.fileId;
     
-    subtitle.innerHTML = 'Processing video source data...' + fileId;
-    let sourceFile = await downloadSourceFileFromS3(fileId);
-    console.log(sourceFile);
+    subtitle.innerHTML = 'Accessing video source data...';
+    let sourceFileArrayBuffer = await downloadSourceFileFromS3(fileId);
+
+    subtitle.innerHTML = 'Processing video...';
+    let data = new Data(sourceFileArrayBuffer);
+    let animation = new Animation("render", data);
+    animation.download();
+
 }
 
 async function getPaymentSessionDataUrl(paymentSessionId) {
