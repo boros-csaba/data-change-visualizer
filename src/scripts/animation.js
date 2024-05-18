@@ -63,7 +63,7 @@ export class Animation {
 
   }
 
-  download() {
+  download(onDownloadComplete, downloadButtonId) {
 
     let canvas = document.querySelector('canvas');
     console.log(canvas);
@@ -81,13 +81,11 @@ export class Animation {
       }
     };
 
-    mediaRecorder.onstop = function(e) {
+    mediaRecorder.onstop = function() {
       var blob = new Blob(chunks, { 'type' : 'video/webm;codecs=h264' });
-      console.log(chunks);
-      console.log(blob);
       chunks = [];
         var videoURL = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.getElementById(downloadButtonId);
         link.href = videoURL;
         link.download = 'video.webm';
         link.dispatchEvent(new MouseEvent('click'), {
@@ -95,16 +93,11 @@ export class Animation {
           cancelable: true,
           view: window
         });
-
-        setTimeout(() => {  
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
       };
 
     setTimeout(function () { 
       mediaRecorder.stop(); 
-      console.log("Stop")
+      onDownloadComplete();
     }, 5000); // todo calculate duration
   }
 
