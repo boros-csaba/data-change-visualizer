@@ -68,7 +68,7 @@ export class Animation {
     let canvas = document.querySelector('canvas');
     console.log(canvas);
     let videoStream = canvas.captureStream();
-    let mediaRecorder = new MediaRecorder(videoStream, {mimeType: 'video/mp4;codecs=h264'});
+    let mediaRecorder = new MediaRecorder(videoStream, {mimeType: 'video/webm;codecs=h264'});
     mediaRecorder.start();
     this.startAnimation();
 
@@ -82,14 +82,14 @@ export class Animation {
     };
 
     mediaRecorder.onstop = function(e) {
-      var blob = new Blob(chunks, { 'type' : 'video/mp4;codecs=h264' });
+      var blob = new Blob(chunks, { 'type' : 'video/webm;codecs=h264' });
       console.log(chunks);
       console.log(blob);
       chunks = [];
         var videoURL = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = videoURL;
-        link.download = 'video.mp4';
+        link.download = 'video.webm';
         link.dispatchEvent(new MouseEvent('click'), {
           bubbles: true,
           cancelable: true,
