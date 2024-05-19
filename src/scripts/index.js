@@ -11,6 +11,8 @@ const app = {
 
 async function init() {
 
+    document.getElementById('download-demo-link').setAttribute('href', demoDataArrayBufferPath);
+    
     let demoFile = await (await fetch(demoDataArrayBufferPath)).arrayBuffer();
     let demoData = new Data(demoFile);
     app.animation = new Animation("render", demoData);

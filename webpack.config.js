@@ -13,7 +13,8 @@ module.exports = {
         alias: {
           '@scripts': path.join(__dirname, 'src/scripts'),
           '@styles': path.join(__dirname, 'src/styles'),
-          '@images': path.join(__dirname, 'src/images'),
+          '@assets': path.join(__dirname, 'src/assets'),
+          '@root': path.join(__dirname, 'src/'),
         },
       },
 

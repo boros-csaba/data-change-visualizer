@@ -31,12 +31,40 @@ $bgWidth: 10000px;
     .section-inner {
       width: 1000px;
 
+      .section-left-side {
+        max-width: 600px;
+      }
+
       .section-title {
         color: white;
         font-family: "Caveat", cursive;
         font-optical-sizing: auto;
         font-style: normal;
         font-size: 38px;
+      }
+
+      .section-description {
+        color: white;
+        font-family: 'Courier New', Courier, monospace;
+        font-optical-sizing: auto;
+        font-style: normal;
+        font-size: 18px;
+      }
+    }
+
+    .section-prepare-data {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      #download-demo-link {
+        background-color: #00000020;
+        color: white;
+        padding: 1px 2px;
+      }
+
+      i {
+        background-color: #00000020;
       }
     }
   }
