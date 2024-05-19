@@ -173,6 +173,7 @@ export class Animation {
   getTime() {
     let time = Math.floor(this.frame / this.framesBetweenTimeChange);
     if (time >= this.data.timeLabels.length) {
+      this.stopAnimation();
       time = this.data.timeLabels.length - 1;
     }
     return time;
