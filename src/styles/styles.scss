@@ -10,54 +10,23 @@ body {
 
 $bgWidth: 10000px;
 #content {
-  #section1 {
-    background: linear-gradient(
-      to right,
-      #1e5799 0%,
-      #2ce0bf 19%,
-      #76dd2c 40%,
-      #dba62b 60%,
-      #e02cbf 83%,
-      #1e5799 100%
-    );
-    background-size: $bgWidth 100%;
-    animation: bg 60s linear infinite;
-  }
-
-  #section2 {
-    background: linear-gradient(
-      to right,
-      #1e5799 0%,
-      #e02cbf 19%,
-      #dba62b 40%,
-      #76dd2c 60%,
-      #2ce0bf 83%,
-      #1e5799 100%
-    );
-    background-size: $bgWidth 100%;
-    animation: bg 60s linear infinite;
-  }
-
-  #section3 {
-    background: linear-gradient(
-      to right,
-      #1e5799 0%,
-      #2ce0bf 19%,
-      #76dd2c 40%,
-      #dba62b 60%,
-      #e02cbf 83%,
-      #1e5799 100%
-    );
-    background-size: $bgWidth 100%;
-    animation: bg 60s linear infinite;
-  }
-
   section {
     display: flex;
     height: 100vh;
     scroll-snap-align: start;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(
+      to right,
+      #1e5799 0%,
+      #2ce0bf 19%,
+      #76dd2c 40%,
+      #dba62b 60%,
+      #e02cbf 83%,
+      #1e5799 100%
+    );
+    background-size: $bgWidth 100%;
+    animation: bg 60s linear infinite;
 
     .section-inner {
       width: 1000px;
@@ -85,6 +54,13 @@ $bgWidth: 10000px;
       background: black;
       border-radius: 20px;
       padding: 10px;
+      height: 580px;
+      width: 327px;
+      background: url('../assets/loading.gif');
+      background-color: black;
+      background-position: center;
+      background-size: 200px;
+      background-repeat: no-repeat;
 
       canvas {
         width: auto !important;
