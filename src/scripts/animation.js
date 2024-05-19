@@ -122,7 +122,6 @@ export class Animation {
     this.setBarsPosition();
 
     this.renderer.render(this.scene, this.camera);
-
     this.frame++;
   }
 

@@ -15,14 +15,18 @@ export class Data {
         );
         let sheet = workbook.Sheets[workbook.SheetNames[0]];
         var rawData = utils.sheet_to_json(sheet, { header: 1 });
-
-        this.timeLabels = rawData.map((row) => row[0]).slice(1);
-        this.items = rawData[0].slice(1).map((name, index) => {
-            return {
-                name: name,
-                data: rawData.slice(1).map((row) => row[index + 1]),
-            };
-        });
+        this.timeLabels = [...new Set(rawData.map((row) => row[0]).slice(1))];
+        for (var i = 1; i < rawData.length; i++) {
+            let item = this.items.filter((item) => item.name === rawData[i][1]);
+            if (item.length === 0) {
+                item = { name: rawData[i][1], data: [] };
+                this.items.push(item);
+            }
+            else {
+                item = item[0];
+            }
+            item.data.push(rawData[i][2]);
+        }
 
         for (let time = 0; time < this.timeLabels.length; time++) {
             let dataForTime = this.items
