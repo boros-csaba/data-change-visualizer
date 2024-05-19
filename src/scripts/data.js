@@ -15,17 +15,44 @@ export class Data {
         );
         let sheet = workbook.Sheets[workbook.SheetNames[0]];
         var rawData = utils.sheet_to_json(sheet, { header: 1 });
+        rawData = rawData.slice(1);
+        rawData = rawData.sort((a, b) => a[0] - b[0]);
         this.timeLabels = [...new Set(rawData.map((row) => row[0]).slice(1))];
-        for (var i = 1; i < rawData.length; i++) {
+
+        
+        for (var i = 0; i < rawData.length; i++) {
             let item = this.items.filter((item) => item.name === rawData[i][1]);
             if (item.length === 0) {
                 item = { name: rawData[i][1], data: [] };
                 this.items.push(item);
             }
-            else {
-                item = item[0];
-            }
+        }
+
+        let yearNr = 0;
+        let currentDate = rawData[1][0];
+        for (var i = 0; i < rawData.length; i++) {
+            let item = this.items.filter((item) => item.name === rawData[i][1])[0];
             item.data.push(rawData[i][2]);
+            let newData = rawData[i][0];
+
+            if (currentDate !== newData) {
+                yearNr++;
+                currentDate = newData;
+                console.log(currentDate);
+                for (let j = 0; j < this.items.length; j++) {
+                    if (this.items[j].data.length < yearNr) {
+                        console.log('ok', this.items[j].data.length, yearNr);
+                        this.items[j].data.push(0);
+                    }
+                }
+            }
+        }
+
+        yearNr++;
+        for (let j = 0; j < this.items.length; j++) {
+            if (this.items[j].data.length < yearNr) {
+                this.items[j].data.push(0);
+            }
         }
 
         for (let time = 0; time < this.timeLabels.length; time++) {
