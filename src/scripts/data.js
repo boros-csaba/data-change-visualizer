@@ -38,10 +38,8 @@ export class Data {
             if (currentDate !== newData) {
                 yearNr++;
                 currentDate = newData;
-                console.log(currentDate);
                 for (let j = 0; j < this.items.length; j++) {
                     if (this.items[j].data.length < yearNr) {
-                        console.log('ok', this.items[j].data.length, yearNr);
                         this.items[j].data.push(0);
                     }
                 }

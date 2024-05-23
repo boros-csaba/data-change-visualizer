@@ -66,7 +66,6 @@ export class Animation {
   download(onDownloadComplete, downloadButtonId) {
 
     let canvas = document.querySelector('canvas');
-    console.log(canvas);
     let videoStream = canvas.captureStream();
     let mediaRecorder = new MediaRecorder(videoStream, {mimeType: 'video/webm;codecs=h264'});
     mediaRecorder.start();
@@ -75,7 +74,6 @@ export class Animation {
     videoStream.getVideoTracks()[0].requestFrame();
     var chunks = [];
     mediaRecorder.ondataavailable = function(e) {
-      console.log(e);
       if (e.data) {
         chunks.push(e.data);
       }
@@ -118,8 +116,14 @@ export class Animation {
 
     requestAnimationFrame(() => this.animate());
 
-    this.setBarsWidth();
     this.setBarsPosition();
+    this.setBarsWidth();
+
+    for (const item of this.data.items.filter((item) => item.bar != null)) {
+      item.bar.position.x = item.positionX;
+      item.bar.position.y = item.positionY;
+      item.bar.scale.x = item.barScaleX;
+    }
 
     this.renderer.render(this.scene, this.camera);
     this.frame++;
@@ -142,7 +146,7 @@ export class Animation {
           barWidth;
       }
 
-      this.data.items[item].bar.scale.x = barWidth;
+      this.data.items[item].barScaleX = barWidth;
     }
   }
 
@@ -150,22 +154,36 @@ export class Animation {
     let time = this.getTime();
     let barsAreaHeight = (this.barThickness + this.barGap) * this.maxNrOfBarsToShow;
     let barsAreaTop = barsAreaHeight / 2;
+    let barsAreaBottom = -barsAreaHeight / 2;
 
     for (const item of this.data.items) {
       var sortOrder = this.data.getItemOrder(item.name, time);
 
-      item.bar.position.y =
+      item.positionY =
         barsAreaTop - this.barThickness / 2 - sortOrder * (this.barThickness + this.barGap);
-      item.bar.position.x = item.bar.scale.x / 2 - this.barMaxWidth / 2;
+      item.positionX = item.barScaleX / 2 - this.barMaxWidth / 2;
 
       if (time < this.data.timeLabels.length - 1) {
         var nextSortOrder = this.data.getItemOrder(item.name, time + 1);
         var timeFrame = this.frame % this.framesBetweenTimeChange;
 
-        item.bar.position.y -=
+        item.positionY -=
           (timeFrame / this.framesBetweenTimeChange) *
           (nextSortOrder - sortOrder) *
           (this.barThickness + this.barGap);
+      }
+
+      if (item.positionY < barsAreaBottom) {
+        if (item.bar != null) {
+          this.scene.remove(item.bar);
+          item.bar = null;
+        }
+      }
+      else if (item.bar === null) {
+        var geometry = new BoxGeometry(1, this.barThickness, 1);
+        var material = new MeshBasicMaterial({ color: 0x00ff00 });
+        item.bar = new Mesh(geometry, material);
+        this.scene.add(item.bar);
       }
     }
   }
