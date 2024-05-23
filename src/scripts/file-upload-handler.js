@@ -1,4 +1,3 @@
-import { read, utils } from 'xlsx';
 import { Data } from './data.js'; 
 
 export class FileUploadHandler {
@@ -61,43 +60,24 @@ export class FileUploadHandler {
         );
     }
 
-    handleFileUpload(animation) {
+    handleFileUpload() {
         const fileInput = document.querySelector('input[type="file"]');
         const file = fileInput.files[0];
         let fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
-        fileReader.onload = (e) => this.onFileLoad(e, animation);
+        fileReader.onload = (e) => this.onFileLoad(e);
     }
 
-    onFileLoad(event, animation) {
+    onFileLoad(event) {
         let fileData = event.target.result;
 
         var data = new Data(fileData);
+        if (this.onDataAvailable) {
+            this.onDataAvailable(data);
+        }
 
         if (this.onRawFileDataAvailable) {
             this.onRawFileDataAvailable(fileData);
         }
-        let workbook = read(
-            fileData,
-            { type: 'binary' },
-            { dateNF: 'mm/dd/yyyy' }
-        );
-        let sheet = workbook.Sheets[workbook.SheetNames[0]];
-        var rawData = utils.sheet_to_json(sheet, { header: 1 });
-        this.processData(rawData, animation);
-    }
-
-    processData(rawData, animation) {
-        let timeLabels = rawData.map((row) => row[0]).slice(1);
-        let items = rawData[0].slice(1).map((name, index) => {
-            return {
-                name: name,
-                data: rawData.slice(1).map((row) => row[index + 1]),
-            };
-        });
-
-        animation.stopAnimation();
-        animation.clearScene();
-        animation.startAnimation();
     }
 }

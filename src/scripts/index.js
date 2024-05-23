@@ -22,7 +22,7 @@ async function init() {
         (data) => onNewDataAvailable(data)
     );
 
-    fileUploadHandler.initFileUploadInput(app.animation);
+    fileUploadHandler.initFileUploadInput();
     app.animation.startAnimation();
 }
 
