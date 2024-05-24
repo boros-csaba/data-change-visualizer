@@ -13,14 +13,15 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 
 export class Animation {
 
+  options = null;
   data = null;
-  width = 540;
-  height = 960;
+  camera = null;
+
   cameraLeftMargin = 1;
   cameraTopMargin = -1;
-  barThickness = 20;
-  barMaxWidth = 200;
-  barGap = 10;
+  barThickness = 30;
+  barMaxWidth = 300;
+  barGap = 15;
   maxNrOfBarsToShow = 15;
   framesBetweenTimeChange = 30;
 
@@ -29,25 +30,25 @@ export class Animation {
 
   isAnimationRunning = false;
   frame = 0;
-  camera = new OrthographicCamera(
-    this.width / -2,
-    this.width / 2,
-    this.height / 2,
-    this.height / -2,
-    0.1,
-    1000
-  );
 
-  constructor(domElementId, data) {
+  constructor(domElementId, data, options) {
 
+    this.options = options;
     this.data = data;
     this.scene.background = new Color(0xffffff);
+    this.camera = new OrthographicCamera(
+      this.options.width / -2,
+      this.options.width / 2,
+      this.options.height / 2,
+      this.options.height / -2,
+      0.1,
+      1000
+    );
     this.camera.position.z = 2;
     this.camera.position.x = this.cameraLeftMargin;
     this.camera.position.y = this.cameraTopMargin;
-    this.renderer.setSize(this.width, this.height);
+    this.renderer.setSize(this.options.width, this.options.height);
     document.getElementById(domElementId).appendChild(this.renderer.domElement);
-
   }
 
   startAnimation() {
@@ -55,6 +56,7 @@ export class Animation {
     for (const item of this.data.items) {
       item.colorIndex = this.data.items.indexOf(item) % this.barColors.length;
     }
+    console.log(this.data.items);
 
     this.isAnimationRunning = true;
     this.frame = 0;
