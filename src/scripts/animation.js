@@ -8,6 +8,8 @@ import {
   MeshBasicMaterial,
   Mesh,
 } from "three";
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
 
 export class Animation {
 
@@ -52,10 +54,6 @@ export class Animation {
 
     for (const item of this.data.items) {
       item.colorIndex = this.data.items.indexOf(item) % this.barColors.length;
-      var geometry = new BoxGeometry(1, this.barThickness, 1);
-      var material = new MeshBasicMaterial({ color: this.barColors[item.colorIndex] });
-      item.bar = new Mesh(geometry, material);
-      this.scene.add(item.bar);
     }
 
     this.isAnimationRunning = true;
@@ -120,10 +118,27 @@ export class Animation {
     this.setBarsPosition();
     this.setBarsWidth();
 
-    for (const item of this.data.items.filter((item) => item.bar != null)) {
-      item.bar.position.x = item.positionX;
-      item.bar.position.y = item.positionY;
-      item.bar.scale.x = item.barScaleX;
+    for (const item of this.data.items) {
+
+      if (item.isVisible) {
+
+        if (item.bar == null) {
+          var geometry = new BoxGeometry(1, this.barThickness, 1);
+          var material = new MeshBasicMaterial({ color: this.barColors[item.colorIndex] });
+          item.bar = new Mesh(geometry, material);
+          this.scene.add(item.bar);
+        }
+
+        item.bar.position.x = item.positionX;
+        item.bar.position.y = item.positionY;
+        item.bar.scale.x = item.barScaleX;
+
+      }
+      else {
+        this.scene.remove(item.bar);
+        item.bar = null;
+      }
+      
     }
 
     this.renderer.render(this.scene, this.camera);
@@ -174,19 +189,12 @@ export class Animation {
           (this.barThickness + this.barGap);
       }
 
-      if (item.positionY < barsAreaBottom) {
-        if (item.bar != null) {
-          this.scene.remove(item.bar);
-          item.bar = null;
-        }
-      }
-      else if (item.bar === null) {
-        var geometry = new BoxGeometry(1, this.barThickness, 1);
-        var material = new MeshBasicMaterial({ color: "#ea5545" });
-        item.bar = new Mesh(geometry, material);
-        this.scene.add(item.bar);
-      }
+      item.isVisible = item.positionY >= barsAreaBottom;
     }
+  }
+
+  setNumberLabel() {
+
   }
 
   getTime() {
