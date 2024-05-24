@@ -19,7 +19,7 @@ async function downloadVideo() {
     subtitle.innerHTML = 'Processing video...';
     let data = new Data(sourceFileArrayBuffer);
     let animation = new Animation("render", data);
-    animation.download(
+    await animation.download(
         () => {
             subtitle.innerHTML = 'Your download will start automatically.'
         }, 

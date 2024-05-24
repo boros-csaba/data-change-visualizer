@@ -2,14 +2,15 @@ import '../styles/styles.scss';
 import { Animation } from './animation.js';
 import { Data } from './data.js'; 
 import { FileUploadHandler } from './file-upload-handler.js';
-import demoDataArrayBufferPath from '../demo-data.xlsx';
+import demoDataArrayBufferPath from '../assets/demo-data.xlsx';
 
 const app = {
     uploadedRawFileData: null,
     animation: null,
     options: {
         width: 540,
-        height: 960
+        height: 960,
+        maxNrOfBarsToShow: 15
     }
 };
 
@@ -27,7 +28,7 @@ async function init() {
     );
 
     fileUploadHandler.initFileUploadInput();
-    app.animation.startAnimation();
+    await app.animation.startAnimation();
 }
 
 function onNewDataAvailable(data) {

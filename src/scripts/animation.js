@@ -1,4 +1,5 @@
 import "../styles/styles.scss";
+import fontUrl from "../assets/helvetiker_regular.typeface.json";
 import {
   Color,
   Scene,
@@ -6,10 +7,10 @@ import {
   WebGLRenderer,
   BoxGeometry,
   MeshBasicMaterial,
-  Mesh,
+  Mesh
 } from "three";
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 export class Animation {
 
@@ -22,11 +23,14 @@ export class Animation {
   barThickness = 30;
   barMaxWidth = 300;
   barGap = 15;
+  barAndLabelGap = 10;
   maxNrOfBarsToShow = 15;
-  framesBetweenTimeChange = 30;
+  framesBetweenTimeChange = 20;
 
   scene = new Scene();
   renderer = new WebGLRenderer();
+  loader = new FontLoader();
+  font = null;
 
   isAnimationRunning = false;
   frame = 0;
@@ -51,12 +55,13 @@ export class Animation {
     document.getElementById(domElementId).appendChild(this.renderer.domElement);
   }
 
-  startAnimation() {
+  async startAnimation() {
 
     for (const item of this.data.items) {
       item.colorIndex = this.data.items.indexOf(item) % this.barColors.length;
     }
-    console.log(this.data.items);
+    
+    await this.loader.loadAsync(fontUrl).then(font => this.font = font);
 
     this.isAnimationRunning = true;
     this.frame = 0;
@@ -131,14 +136,37 @@ export class Animation {
           this.scene.add(item.bar);
         }
 
+        if (item.label == null) {
+          let textGeometry = new TextGeometry(item.name, {
+            font: this.font,
+            size: 12,
+            height: 1,
+          });
+          let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
+          item.label = new Mesh(textGeometry, textMaterial);
+          textGeometry.computeBoundingBox();
+          console.log(textGeometry);
+          item.label.position.x = -textGeometry.boundingBox.max.x - this.barMaxWidth / 2 - this.barAndLabelGap;
+          item.labelYOffset = (this.barThickness - textGeometry.boundingBox.max.y) / 2 - 5;
+          this.scene.add(item.label);
+        }
+
         item.bar.position.x = item.positionX;
         item.bar.position.y = item.positionY;
         item.bar.scale.x = item.barScaleX;
 
+        item.label.position.y = item.positionY - item.labelYOffset;
+
       }
       else {
-        this.scene.remove(item.bar);
-        item.bar = null;
+        if (item.bar != null) {
+          this.scene.remove(item.bar);
+          item.bar = null;
+        }
+        if (item.label != null) {
+          this.scene.remove(item.label);
+          item.label = null;
+        }
       }
       
     }

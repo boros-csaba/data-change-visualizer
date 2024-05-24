@@ -63,6 +63,10 @@ module.exports = {
                 test: /\.xlsx$/,
                 type: 'asset/resource',
             },
+            {
+                test: /\.json$/,
+                type: 'asset/resource',
+            },
         ],
     },
 };
