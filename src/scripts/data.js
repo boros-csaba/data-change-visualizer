@@ -54,16 +54,9 @@ export class Data {
             }
         }
 
-        for (let time = 0; time < this.timeLabels.length; time++) {
-            let dataForTime = this.items
-                .map((item, _) => ({ value: item.data[time], name: item.name }))
-                .sort((a, b) => b.value - a.value)
-                .map((item, _) => item.name);
-    
-            this.sortOrderByTime.push(dataForTime);
-        }
-
+        this.calculateSortOrders();
         this.removeNotVisibleItems();
+        this.calculateSortOrders();
     }
 
     getMaxValue(time) {
@@ -91,5 +84,16 @@ export class Data {
         }
 
         this.items = this.items.filter((item) => itemsToKeep.indexOf(item) !== -1);
+    }
+
+    calculateSortOrders() {
+        for (let time = 0; time < this.timeLabels.length; time++) {
+            let dataForTime = this.items
+                .map((item, _) => ({ value: item.data[time], name: item.name }))
+                .sort((a, b) => b.value - a.value)
+                .map((item, _) => item.name);
+    
+            this.sortOrderByTime.push(dataForTime);
+        }
     }
 }
