@@ -27,3 +27,13 @@ export function createNumberLabelForBar(item, number, font) {
     let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
     item.numberLabel = new Mesh(textGeometry, textMaterial);
 }
+
+export function createDateLabel(text, font) {
+    let textGeometry = new TextGeometry(text, {
+        font: font,
+        size: 40,
+        height: 1,
+    });
+    let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
+    return new Mesh(textGeometry, textMaterial);
+}

@@ -10,7 +10,7 @@ import {
   Mesh
 } from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { createLabelForBar, createNumberLabelForBar } from "./animation-utils";
+import { createLabelForBar, createNumberLabelForBar, createDateLabel } from "./animation-utils";
 
 export class Animation {
 
@@ -34,6 +34,8 @@ export class Animation {
 
   isAnimationRunning = false;
   frame = 0;
+
+  dateLabel = null;
 
   constructor(domElementId, data, options) {
 
@@ -174,6 +176,13 @@ export class Animation {
       }
       
     }
+
+    if (this.dateLabel != null) {
+      this.scene.remove(this.dateLabel);
+      this.dateLabel = null;
+    }
+    this.dateLabel = createDateLabel(this.data.timeLabels[this.getTime()].toString(), this.font);
+    this.scene.add(this.dateLabel);
 
     this.renderer.render(this.scene, this.camera);
     this.frame++;
