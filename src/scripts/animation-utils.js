@@ -28,12 +28,16 @@ export function createNumberLabelForBar(item, number, font) {
     item.numberLabel = new Mesh(textGeometry, textMaterial);
 }
 
-export function createDateLabel(text, font) {
+export function createDateLabel(text, font, barsAreaBottom, barMaxWidth) {
     let textGeometry = new TextGeometry(text, {
         font: font,
         size: 40,
         height: 1,
     });
-    let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
-    return new Mesh(textGeometry, textMaterial);
+    textGeometry.computeBoundingBox();
+    let textMaterial = new MeshBasicMaterial({ color: 0x333333 });
+    let textMesh = new Mesh(textGeometry, textMaterial); 
+    textMesh.position.x = barMaxWidth / 2 - textGeometry.boundingBox.max.x / 2;
+    textMesh.position.y = barsAreaBottom - textGeometry.boundingBox.max.y;
+    return textMesh;
 }

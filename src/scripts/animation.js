@@ -12,6 +12,8 @@ import {
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 import { createLabelForBar, createNumberLabelForBar, createDateLabel } from "./animation-utils";
 
+import Stats from 'three/addons/libs/stats.module.js'
+
 export class Animation {
 
   options = null;
@@ -25,7 +27,11 @@ export class Animation {
   barGap = 15;
   barAndLabelGap = 10;
   maxNrOfBarsToShow = 15;
-  framesBetweenTimeChange = 20;
+  framesBetweenTimeChange = 15;
+
+  barsAreaHeight = (this.barThickness + this.barGap) * this.maxNrOfBarsToShow;
+  barsAreaTop = this.barsAreaHeight / 2;
+  barsAreaBottom = -this.barsAreaHeight / 2;
 
   scene = new Scene();
   renderer = new WebGLRenderer();
@@ -36,6 +42,8 @@ export class Animation {
   frame = 0;
 
   dateLabel = null;
+
+  stats = null;
 
   constructor(domElementId, data, options) {
 
@@ -58,6 +66,9 @@ export class Animation {
   }
 
   async startAnimation() {
+
+    this.stats = new Stats()
+    document.body.appendChild(this.stats.dom);
 
     for (const item of this.data.items) {
       item.colorIndex = this.data.items.indexOf(item) % this.barColors.length;
@@ -119,13 +130,18 @@ export class Animation {
 
   animate() {
 
+    var startTime = performance.now()
+
     if (!this.isAnimationRunning) 
       return;
 
     requestAnimationFrame(() => this.animate());
 
     this.setBarsPosition();
+    var startTime2 = performance.now()
     this.setBarsWidth();
+    var endTime2 = performance.now()
+    console.log('setBarsWidth', endTime2 - startTime2);
 
     for (const item of this.data.items) {
 
@@ -181,11 +197,16 @@ export class Animation {
       this.scene.remove(this.dateLabel);
       this.dateLabel = null;
     }
-    this.dateLabel = createDateLabel(this.data.timeLabels[this.getTime()].toString(), this.font);
+    this.dateLabel = createDateLabel(this.data.timeLabels[this.getTime()].toString(), this.font, this.barsAreaBottom, this.barMaxWidth);
     this.scene.add(this.dateLabel);
 
     this.renderer.render(this.scene, this.camera);
     this.frame++;
+
+    var endTime = performance.now()
+    console.log('animate', endTime - startTime);
+    this.stats.update()
+    
   }
 
   setBarsWidth() {
@@ -211,15 +232,12 @@ export class Animation {
 
   setBarsPosition() {
     let time = this.getTime();
-    let barsAreaHeight = (this.barThickness + this.barGap) * this.maxNrOfBarsToShow;
-    let barsAreaTop = barsAreaHeight / 2;
-    let barsAreaBottom = -barsAreaHeight / 2;
 
     for (const item of this.data.items) {
       var sortOrder = this.data.getItemOrder(item.name, time);
 
       item.positionY =
-        barsAreaTop - this.barThickness / 2 - sortOrder * (this.barThickness + this.barGap);
+        this.barsAreaTop - this.barThickness / 2 - sortOrder * (this.barThickness + this.barGap);
       item.positionX = item.barScaleX / 2 - this.barMaxWidth / 2;
 
       if (time < this.data.timeLabels.length - 1) {
@@ -232,7 +250,7 @@ export class Animation {
           (this.barThickness + this.barGap);
       }
 
-      item.isVisible = item.positionY >= barsAreaBottom;
+      item.isVisible = item.positionY >= this.barsAreaBottom;
     }
   }
 
