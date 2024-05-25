@@ -130,18 +130,13 @@ export class Animation {
 
   animate() {
 
-    var startTime = performance.now()
-
     if (!this.isAnimationRunning) 
       return;
 
     requestAnimationFrame(() => this.animate());
 
     this.setBarsPosition();
-    var startTime2 = performance.now()
     this.setBarsWidth();
-    var endTime2 = performance.now()
-    console.log('setBarsWidth', endTime2 - startTime2);
 
     for (const item of this.data.items) {
 
@@ -203,8 +198,6 @@ export class Animation {
     this.renderer.render(this.scene, this.camera);
     this.frame++;
 
-    var endTime = performance.now()
-    console.log('animate', endTime - startTime);
     this.stats.update()
     
   }
