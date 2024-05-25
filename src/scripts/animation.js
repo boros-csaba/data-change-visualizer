@@ -10,7 +10,7 @@ import {
   Mesh
 } from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { createLabelForBar } from "./animation-utils";
 
 export class Animation {
 
@@ -137,17 +137,7 @@ export class Animation {
         }
 
         if (item.label == null) {
-          let textGeometry = new TextGeometry(item.name, {
-            font: this.font,
-            size: 12,
-            height: 1,
-          });
-          let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
-          item.label = new Mesh(textGeometry, textMaterial);
-          textGeometry.computeBoundingBox();
-          console.log(textGeometry);
-          item.label.position.x = -textGeometry.boundingBox.max.x - this.barMaxWidth / 2 - this.barAndLabelGap;
-          item.labelYOffset = (this.barThickness - textGeometry.boundingBox.max.y) / 2 - 5;
+          createLabelForBar(item, this.font, this.barMaxWidth, this.barThickness, this.barAndLabelGap);
           this.scene.add(item.label);
         }
 
