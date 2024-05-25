@@ -6,6 +6,8 @@ export class Data {
     timeLabels = [];
     sortOrderByTime = [];
 
+    maxNrOfBarsToShow = 15; // todo move to options
+
     constructor(arrayBuffer) {
 
         let workbook = read(
@@ -18,7 +20,6 @@ export class Data {
         rawData = rawData.slice(1);
         rawData = rawData.sort((a, b) => a[0] - b[0]);
         this.timeLabels = [...new Set(rawData.map((row) => row[0]).slice(1))];
-
         
         for (var i = 0; i < rawData.length; i++) {
             let item = this.items.filter((item) => item.name === rawData[i][1]);
@@ -62,6 +63,7 @@ export class Data {
             this.sortOrderByTime.push(dataForTime);
         }
 
+        this.removeNotVisibleItems();
     }
 
     getMaxValue(time) {
@@ -70,5 +72,24 @@ export class Data {
 
     getItemOrder(name, time) {
         return this.sortOrderByTime[time].indexOf(name);
+    }
+
+    removeNotVisibleItems() {
+        let itemsToKeep = [];
+
+        for (let i = 0; i < this.items.length; i++) {
+            let item = this.items[i];
+            for (var time = 0; time < this.timeLabels.length; time++) {
+                let itemPosition = this.getItemOrder(item.name, time);
+                if (itemPosition < this.maxNrOfBarsToShow) {
+                    if (itemsToKeep.indexOf(item) === -1) {
+                        itemsToKeep.push(item);
+                    }
+                    break;
+                }
+            }
+        }
+
+        this.items = this.items.filter((item) => itemsToKeep.indexOf(item) !== -1);
     }
 }

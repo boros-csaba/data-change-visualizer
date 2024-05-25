@@ -27,7 +27,7 @@ export class Animation {
   barGap = 15;
   barAndLabelGap = 10;
   maxNrOfBarsToShow = 15;
-  framesBetweenTimeChange = 15;
+  framesBetweenTimeChange = 30;
 
   barsAreaHeight = (this.barThickness + this.barGap) * this.maxNrOfBarsToShow;
   barsAreaTop = this.barsAreaHeight / 2;
