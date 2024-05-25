@@ -10,7 +10,7 @@ import {
   Mesh
 } from "three";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { createLabelForBar } from "./animation-utils";
+import { createLabelForBar, createNumberLabelForBar } from "./animation-utils";
 
 export class Animation {
 
@@ -141,11 +141,21 @@ export class Animation {
           this.scene.add(item.label);
         }
 
+        if (item.numberLabel != null) {
+          this.scene.remove(item.numberLabel);
+          item.numberLabel = null;
+        }
+        createNumberLabelForBar(item, this.getBarNumberLabelText(item), this.font);
+        this.scene.add(item.numberLabel);
+
         item.bar.position.x = item.positionX;
         item.bar.position.y = item.positionY;
         item.bar.scale.x = item.barScaleX;
 
         item.label.position.y = item.positionY - item.labelYOffset;
+
+        item.numberLabel.position.x = item.positionX + item.barScaleX / 2 + this.barAndLabelGap;
+        item.numberLabel.position.y = item.positionY - item.labelYOffset;
 
       }
       else {
@@ -156,6 +166,10 @@ export class Animation {
         if (item.label != null) {
           this.scene.remove(item.label);
           item.label = null;
+        }
+        if (item.numberLabel != null) {
+          this.scene.remove(item.numberLabel);
+          item.numberLabel = null;
         }
       }
       
@@ -213,8 +227,17 @@ export class Animation {
     }
   }
 
-  setNumberLabel() {
+  getBarNumberLabelText(item) {
+    let time = this.getTime();
+    let previousValue = item.data[time];
+    if (time >= item.data.length - 1) {
+      return previousValue.toString();
+    }
+    let nextValue = item.data[time + 1];
 
+    let timeFrame = this.frame % this.framesBetweenTimeChange;
+    let currentValue = Math.round((nextValue - previousValue) * (timeFrame / this.framesBetweenTimeChange) + previousValue);
+    return currentValue.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
   }
 
   getTime() {

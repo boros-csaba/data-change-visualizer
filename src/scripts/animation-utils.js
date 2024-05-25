@@ -17,3 +17,13 @@ export function createLabelForBar(item, font, barMaxWidth, barThickness, barAndL
     item.label.position.x = -textGeometry.boundingBox.max.x - barMaxWidth / 2 - barAndLabelGap;
     item.labelYOffset = (barThickness - textGeometry.boundingBox.max.y) / 2 - 5;
 }
+
+export function createNumberLabelForBar(item, number, font) {
+    let textGeometry = new TextGeometry(number, {
+        font: font,
+        size: 12,
+        height: 1,
+    });
+    let textMaterial = new MeshBasicMaterial({ color: 0x000000 });
+    item.numberLabel = new Mesh(textGeometry, textMaterial);
+}
